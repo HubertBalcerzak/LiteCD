@@ -1,0 +1,12 @@
+.fill {
+    min-height: 100vh;
+    height: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.main-row {
+    width: 100%;
+}
