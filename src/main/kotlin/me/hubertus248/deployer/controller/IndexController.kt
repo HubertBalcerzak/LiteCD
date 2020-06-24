@@ -2,6 +2,7 @@ package me.hubertus248.deployer.controller
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
+import javax.servlet.http.HttpServletRequest
 
 @Controller
 class IndexController {
@@ -11,4 +12,10 @@ class IndexController {
 
     @GetMapping("/apps")
     fun appList(): String = "apps"
+
+    @GetMapping("/logout")
+    fun logout(request: HttpServletRequest): String{
+        request.logout()
+        return "index"
+    }
 }
