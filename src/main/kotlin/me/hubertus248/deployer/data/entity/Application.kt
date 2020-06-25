@@ -9,5 +9,15 @@ class Application(
         val id: Long,
 
         @Column
-        val name: String
+        val name: String,
+
+        val visibility: Visibility,
+
+        @OneToMany(fetch = FetchType.LAZY)
+        val instances: Set<Instance> = emptySet()
 )
+
+enum class Visibility {
+    PUBLIC,
+    RESTRICTED
+}

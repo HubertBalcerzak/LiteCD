@@ -10,8 +10,8 @@ class IndexController {
     @GetMapping("/")
     fun index(): String = "index"
 
-    @GetMapping("/apps")
-    fun appList(): String = "apps"
+//    @GetMapping("/apps")
+//    fun appList(): String = "apps"
 
     @GetMapping("/logout")
     fun logout(request: HttpServletRequest): String{
