@@ -37,6 +37,7 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         super.configure(http)
+        //TODO refactor
         http.authorizeRequests()
                 .antMatchers("/login")
                 .authenticated()

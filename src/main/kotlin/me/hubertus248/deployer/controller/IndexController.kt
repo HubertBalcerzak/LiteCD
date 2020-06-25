@@ -13,6 +13,7 @@ class IndexController {
 //    @GetMapping("/apps")
 //    fun appList(): String = "apps"
 
+    //TODO use POST /sso/logout instead
     @GetMapping("/logout")
     fun logout(request: HttpServletRequest): String{
         request.logout()
