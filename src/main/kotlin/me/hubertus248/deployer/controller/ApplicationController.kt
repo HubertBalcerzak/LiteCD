@@ -4,6 +4,7 @@ import me.hubertus248.deployer.NotFoundException
 import me.hubertus248.deployer.data.dto.CreateApplicationDTO
 import me.hubertus248.deployer.security.Authenticated
 import me.hubertus248.deployer.service.ApplicationService
+import me.hubertus248.deployer.service.InstanceManagerService
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
@@ -15,7 +16,8 @@ import java.security.Principal
 
 @Controller
 class ApplicationController(
-        private val applicationService: ApplicationService
+        private val applicationService: ApplicationService,
+        private val instanceManagerService: InstanceManagerService
 ) {
 
     @GetMapping("/apps")
@@ -31,13 +33,18 @@ class ApplicationController(
     //TODO restrict to admin
     @Authenticated
     @GetMapping("/newApp")
-    fun newApp(): String = "newApp"
+    fun newApp(model: Model): String {
+        model.addAttribute("managers", instanceManagerService.getAvailableManagers())
+        return "newApp"
+    }
 
     //TODO restrict to admin
     @Authenticated
     @PostMapping("/newApp")
     fun newAppPost(@ModelAttribute @Validated createApplicationDTO: CreateApplicationDTO): RedirectView {
-        applicationService.createApplication(createApplicationDTO.name, createApplicationDTO.visibility)
+        applicationService.createApplication(createApplicationDTO.name,
+                createApplicationDTO.visibility,
+                createApplicationDTO.manager)
         return RedirectView("apps")//TODO redirect to app page
     }
 
@@ -45,7 +52,7 @@ class ApplicationController(
     fun getApp(@PathVariable appId: Long, model: Model, authentication: Authentication?): String {
         val application = applicationService.findApplication(appId, authentication?.isAuthenticated ?: false)
                 ?: throw NotFoundException()
-        model.addAttribute("app",application)
+        model.addAttribute("app", application)
         return "app"
     }
 }

@@ -1,5 +1,6 @@
 package me.hubertus248.deployer.data.entity
 
+import me.hubertus248.deployer.instance.InstanceManagerName
 import javax.persistence.*
 
 @Entity
@@ -13,6 +14,9 @@ class Application(
 
         @Column(unique = false, updatable = true)
         val visibility: Visibility,
+
+        @Embedded
+        val manager: InstanceManagerName,
 
         @OneToMany(fetch = FetchType.LAZY)
         val instances: Set<Instance> = emptySet()

@@ -2,12 +2,13 @@ package me.hubertus248.deployer.service
 
 import me.hubertus248.deployer.data.entity.Application
 import me.hubertus248.deployer.data.entity.Visibility
+import me.hubertus248.deployer.instance.InstanceManagerName
 import me.hubertus248.deployer.reposiotry.ApplicationRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 interface ApplicationService {
-    fun createApplication(name: String, visibility: Visibility): Long
+    fun createApplication(name: String, visibility: Visibility, managerName: InstanceManagerName): Long
 
     fun listApplications(pageable: Pageable): Set<Application>
 
@@ -18,13 +19,14 @@ interface ApplicationService {
 
 @Service
 class ApplicationServiceImpl(
-        private val applicationRepository: ApplicationRepository
+        private val applicationRepository: ApplicationRepository,
+        private val instanceManagerService: InstanceManagerService
 ) : ApplicationService {
 
-    override fun createApplication(name: String, visibility: Visibility): Long {
+    override fun createApplication(name: String, visibility: Visibility, managerName: InstanceManagerName): Long {
         //TODO check name empty
         //TODO check name not unique
-        val newApplication = Application(0, name, visibility)
+        val newApplication = Application(0, name, visibility, managerName)
 
         applicationRepository.save(newApplication)
         return newApplication.id

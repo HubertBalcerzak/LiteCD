@@ -1,6 +1,6 @@
 package me.hubertus248.deployer.data.entity
 
-import javax.persistence.*
+        import javax.persistence.*
 
 @Entity
 class Instance(
@@ -10,4 +10,5 @@ class Instance(
 
         @ManyToOne(fetch = FetchType.LAZY, optional = false)
         val application: Application
+
 )

@@ -19,6 +19,8 @@ class ApplicationRestController(
     //TODO restrict to admin
     @PutMapping("/api/apps")
     fun createApplication(@RequestBody createApplicationDTO: CreateApplicationDTO) {
-        applicationService.createApplication(createApplicationDTO.name, createApplicationDTO.visibility)
+        applicationService.createApplication(createApplicationDTO.name,
+                createApplicationDTO.visibility,
+                createApplicationDTO.manager)
     }
 }

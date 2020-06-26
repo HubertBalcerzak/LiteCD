@@ -26,6 +26,8 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.keycloak:keycloak-spring-boot-starter:10.0.2")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
+	implementation("commons-fileupload:commons-fileupload:1.3.3")
+
 	runtimeOnly("mysql:mysql-connector-java")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
 	testImplementation("org.springframework.boot:spring-boot-starter-test") {

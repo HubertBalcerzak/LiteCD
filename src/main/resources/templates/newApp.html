@@ -19,7 +19,14 @@
         <input type="text" class="form-control" id="nameInput" name="name">
       </div>
       <div class="form-group">
-        <label for="visibilityInput">Example select</label>
+        <label for="managerInput">Instance Manager</label>
+        <select class="form-control" id="managerInput" name="manager">
+          <option th:each="manager: ${managers}" th:text="${manager.friendlyName}"
+                  th:value="${manager.uniqueName}"></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="visibilityInput">Visibility</label>
         <select class="form-control" id="visibilityInput" name="visibility">
           <option>RESTRICTED</option>
           <option>PUBLIC</option>
