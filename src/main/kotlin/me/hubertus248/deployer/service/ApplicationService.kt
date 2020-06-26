@@ -12,6 +12,8 @@ interface ApplicationService {
     fun listApplications(pageable: Pageable): Set<Application>
 
     fun listPublicApplications(pageable: Pageable): Set<Application>
+
+    fun findApplication(id: Long, includeRestricted: Boolean = false): Application?
 }
 
 @Service
@@ -20,6 +22,8 @@ class ApplicationServiceImpl(
 ) : ApplicationService {
 
     override fun createApplication(name: String, visibility: Visibility): Long {
+        //TODO check name empty
+        //TODO check name not unique
         val newApplication = Application(0, name, visibility)
 
         applicationRepository.save(newApplication)
@@ -32,6 +36,11 @@ class ApplicationServiceImpl(
 
     override fun listPublicApplications(pageable: Pageable): Set<Application> {
         return applicationRepository.findAllPublic(pageable).toSet()
+    }
+
+    override fun findApplication(id: Long, includeRestricted: Boolean): Application? {
+        return if (includeRestricted) applicationRepository.findFirstById(id)
+        else applicationRepository.findFirstPublicById(id)
     }
 
 

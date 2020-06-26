@@ -12,4 +12,11 @@ interface ApplicationRepository : JpaRepository<Application, Long> {
         from Application a where a.visibility=me.hubertus248.deployer.data.entity.Visibility.PUBLIC
     """)
     fun findAllPublic(pageable: Pageable): Page<Application>
+
+    fun findFirstById(id: Long): Application?
+
+    @Query("""
+        from Application a where a.id=?1 and a.visibility=me.hubertus248.deployer.data.entity.Visibility.PUBLIC
+    """)
+    fun findFirstPublicById(id: Long): Application?
 }

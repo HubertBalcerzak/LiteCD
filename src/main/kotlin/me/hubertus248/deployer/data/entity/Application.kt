@@ -8,9 +8,10 @@ class Application(
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         val id: Long,
 
-        @Column
+        @Column(nullable = false, unique = true, updatable = false, length = 255)
         val name: String,
 
+        @Column(unique = false, updatable = true)
         val visibility: Visibility,
 
         @OneToMany(fetch = FetchType.LAZY)

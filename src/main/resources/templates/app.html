@@ -13,16 +13,23 @@
   <section>
     <div class="container">
       <div class="row pb-3">
-        <h4 class="col">Applications</h4>
-        <div class="col">
-          <!--          TODO introduce admin role-->
-          <a sec:authorize="isAuthenticated()" class="btn btn-primary float-right" href="/newApp">Create App</a>
-        </div>
+        <h3 class="col" th:text="${app.name}"></h3>
       </div>
-      <!--TODO add pagination-->
-      <div class="list-group">
-        <a th:each="app: ${applications}" class="list-group-item list-group-item-action" th:text="${app.name}"
-           th:href="${'/app/' + app.id}"></a>
+
+      <div class="row">
+        <div class="col">
+          <div class="row">
+            <h5>Running instances:</h5>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <h5 class="col">Create Instance:</h5>
+            <div class="col">
+              <a  href="#" class="btn btn-primary">Manual creation</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
