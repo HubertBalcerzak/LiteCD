@@ -9,3 +9,6 @@ class NotFoundException() : RuntimeException()
 
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 class BadRequestException() : RuntimeException()
+
+@ResponseStatus(HttpStatus.FORBIDDEN)
+class UnauthorizedException() : RuntimeException()

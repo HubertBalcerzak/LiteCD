@@ -13,6 +13,7 @@ interface InstanceManager {
     fun registerApplication(application: Application)
 }
 
+//TODO refactor like FileKey
 @Embeddable
 data class InstanceManagerName(
         @Column(length = 512)

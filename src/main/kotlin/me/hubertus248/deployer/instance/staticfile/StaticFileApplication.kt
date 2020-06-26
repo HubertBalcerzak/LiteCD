@@ -7,13 +7,13 @@ import javax.persistence.*
 class StaticFileApplication(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private val id: Long,
+        val id: Long,
 
-        @OneToOne
-        private val application: Application,
+        @OneToOne(fetch = FetchType.EAGER)
+        val application: Application,
 
         @Embedded
-        private val secret: Secret
+        val secret: Secret
 )
 
 @Embeddable

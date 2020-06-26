@@ -18,7 +18,7 @@ class StaticFileController(
                        @RequestParam file: MultipartFile,
                        @RequestParam secret: String?,
                        @RequestHeader("secret") secretHeader: String?) {
-        val actualSecret: String = secret ?: secretHeader ?: throw BadRequestException()
+        val actualSecret = Secret(secret ?: secretHeader ?: throw BadRequestException())
 
         staticFileInstanceManager.createInstance(app, actualSecret, file, key)
     }
