@@ -1,10 +1,8 @@
 package me.hubertus248.deployer.instance.staticfile
 
+import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.exception.UnauthorizedException
-import me.hubertus248.deployer.data.entity.Application
-import me.hubertus248.deployer.data.entity.Instance
-import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.instance.InstanceManager
 import me.hubertus248.deployer.instance.InstanceManagerFeature
@@ -22,6 +20,8 @@ import java.nio.charset.Charset
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
+val INSTANCE_MANAGER_STATIC_FILE_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_STATIC_FILE")
+
 interface StaticFileInstanceManager {
     fun createInstance(appId: Long, secret: Secret, file: MultipartFile, instanceKey: InstanceKey)
 
@@ -38,7 +38,7 @@ class StaticFileInstanceManagerImpl(
     private val util: Util = Util()
 
     override fun createInstance(appId: Long, secret: Secret, file: MultipartFile, instanceKey: InstanceKey) {
-        val staticFileApplication: StaticFileApplication = staticFileApplicationRepository.findFirstByApplication_Id(appId)
+        val staticFileApplication: StaticFileApplication = staticFileApplicationRepository.findFirstById(appId)
                 ?: throw BadRequestException()
 
         if (secret != staticFileApplication.secret) throw UnauthorizedException()
@@ -88,15 +88,16 @@ class StaticFileInstanceManagerImpl(
 
     override fun getFriendlyName(): String = "Static file manager"
 
-    override fun getUniqueName(): InstanceManagerName = InstanceManagerName("INSTANCE_MANAGER_CORE_STATIC_FILE")
+    override fun getUniqueName(): InstanceManagerName = INSTANCE_MANAGER_STATIC_FILE_NAME
 
-    override fun registerApplication(application: Application) {
-        val staticFileApplication = StaticFileApplication(0, application, Secret(util.secureAlphanumericRandomString(32)))
+    override fun registerApplication(name: ApplicationName, visibility: Visibility): Application {
+        val staticFileApplication = StaticFileApplication(Secret(util.secureAlphanumericRandomString(32)), name, visibility)
         staticFileApplicationRepository.save(staticFileApplication)
+        return staticFileApplication
     }
 
     override fun listInstances(appId: Long, pageable: Pageable): List<Instance> {
-        return staticFileInstanceRepository.findAllByApplicationId(appId, pageable)
+        return staticFileInstanceRepository.findAllById(appId, pageable)
     }
 
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(InstanceManagerFeature.CUSTOM_APPLICATION_INFO)

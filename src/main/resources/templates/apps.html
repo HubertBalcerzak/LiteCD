@@ -21,7 +21,7 @@
       </div>
       <!--TODO add pagination-->
       <div class="list-group">
-        <a th:each="app: ${applications}" class="list-group-item list-group-item-action" th:text="${app.name}"
+        <a th:each="app: ${applications}" class="list-group-item list-group-item-action" th:text="${app.name.value}"
            th:href="${'/app/' + app.id}"></a>
       </div>
     </div>

@@ -1,8 +1,12 @@
 package me.hubertus248.deployer.instance
 
 import me.hubertus248.deployer.data.entity.Application
+import me.hubertus248.deployer.data.entity.ApplicationName
 import me.hubertus248.deployer.data.entity.Instance
+import me.hubertus248.deployer.data.entity.Visibility
 import org.springframework.data.domain.Pageable
+import javax.persistence.Access
+import javax.persistence.AccessType
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
@@ -12,7 +16,7 @@ abstract class InstanceManager {
 
     abstract fun getUniqueName(): InstanceManagerName
 
-    abstract fun registerApplication(application: Application)
+    abstract fun registerApplication(name: ApplicationName, visibility: Visibility): Application
 
     abstract fun listInstances(appId: Long, pageable: Pageable): List<Instance>
 
@@ -30,11 +34,12 @@ abstract class InstanceManager {
 //TODO refactor like FileKey
 @Embeddable
 data class InstanceManagerName(
+        @Access(AccessType.FIELD)
         @Column(length = 512)
-        var managerName: String
+        val value: String
 ) {
     init {
-        require(managerName.isNotBlank())
+        require(value.isNotBlank())
     }
 }
 

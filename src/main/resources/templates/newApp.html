@@ -22,7 +22,7 @@
         <label for="managerInput">Instance Manager</label>
         <select class="form-control" id="managerInput" name="manager">
           <option th:each="manager: ${managers}" th:text="${manager.friendlyName}"
-                  th:value="${manager.uniqueName.managerName}"></option>
+                  th:value="${manager.uniqueName.value}"></option>
         </select>
       </div>
       <div class="form-group">

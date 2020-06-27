@@ -10,17 +10,17 @@ class ApplicationRestController(
         private val applicationService: ApplicationService
 ) {
 
-    @GetMapping("/api/apps")
-    fun listApplications(principal: Principal?) {
-        println(principal)
-        //TODO()
-    }
-
-    //TODO restrict to admin
-    @PutMapping("/api/apps")
-    fun createApplication(@RequestBody createApplicationDTO: CreateApplicationDTO) {
-        applicationService.createApplication(createApplicationDTO.name,
-                createApplicationDTO.visibility,
-                createApplicationDTO.manager)
-    }
+//    @GetMapping("/api/apps")
+//    fun listApplications(principal: Principal?) {
+//        println(principal)
+//        //TODO()
+//    }
+//
+//    //TODO restrict to admin
+//    @PutMapping("/api/apps")
+//    fun createApplication(@RequestBody createApplicationDTO: CreateApplicationDTO) {
+//        applicationService.createApplication(createApplicationDTO.name,
+//                createApplicationDTO.visibility,
+//                createApplicationDTO.manager)
+//    }
 }

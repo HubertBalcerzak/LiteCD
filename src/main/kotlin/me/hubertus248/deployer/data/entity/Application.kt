@@ -4,25 +4,37 @@ import me.hubertus248.deployer.instance.InstanceManagerName
 import javax.persistence.*
 
 @Entity
-class Application(
+@Inheritance(strategy = InheritanceType.JOINED)
+abstract class Application(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
-
-        @Column(nullable = false, unique = true, updatable = false, length = 255)
-        val name: String,
-
-        @Column(unique = false, updatable = true)
-        val visibility: Visibility,
+        open val id: Long,
 
         @Embedded
-        val manager: InstanceManagerName,
+        open val name: ApplicationName,
+
+        @Column(unique = false, updatable = true)
+        open val visibility: Visibility,
+
+        @Embedded
+        open val manager: InstanceManagerName,
 
         @OneToMany(fetch = FetchType.LAZY)
-        val instances: Set<Instance> = emptySet()
+        open val instances: Set<Instance> = emptySet()
 )
 
 enum class Visibility {
     PUBLIC,
     RESTRICTED
+}
+
+@Embeddable
+data class ApplicationName(
+        @Column(name = "name", length = 128, nullable = false, unique = true, updatable = false)
+        val value: String
+) {
+    init {
+        require(value.isNotBlank())
+        require(value.all { it.isLetterOrDigit() })
+    }
 }

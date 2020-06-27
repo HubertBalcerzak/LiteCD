@@ -2,6 +2,7 @@ package me.hubertus248.deployer.controller
 
 import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.data.dto.CreateApplicationDTO
+import me.hubertus248.deployer.data.entity.ApplicationName
 import me.hubertus248.deployer.security.Authenticated
 import me.hubertus248.deployer.service.ApplicationService
 import me.hubertus248.deployer.service.InstanceManagerService
@@ -43,7 +44,7 @@ class ApplicationController(
     @Authenticated
     @PostMapping("/newApp")
     fun newAppPost(@ModelAttribute @Validated createApplicationDTO: CreateApplicationDTO): RedirectView {
-        applicationService.createApplication(createApplicationDTO.name,
+        applicationService.createApplication(ApplicationName(createApplicationDTO.name),
                 createApplicationDTO.visibility,
                 createApplicationDTO.manager)
         return RedirectView("apps")//TODO redirect to app page

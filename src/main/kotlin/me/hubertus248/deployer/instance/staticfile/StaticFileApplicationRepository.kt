@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface StaticFileApplicationRepository : JpaRepository<StaticFileApplication, Long> {
 
-    fun findFirstByApplication_Id(applicationId: Long): StaticFileApplication?
+    fun findFirstById(applicationId: Long): StaticFileApplication?
 }

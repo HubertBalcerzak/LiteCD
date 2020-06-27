@@ -1,21 +1,19 @@
 package me.hubertus248.deployer.instance.staticfile
 
 import me.hubertus248.deployer.data.entity.Application
+import me.hubertus248.deployer.data.entity.ApplicationName
+import me.hubertus248.deployer.data.entity.Visibility
+import me.hubertus248.deployer.instance.InstanceManagerName
 import javax.persistence.*
 
-//TODO extend Application
 @Entity
 class StaticFileApplication(
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val id: Long,
-
-        @OneToOne(fetch = FetchType.EAGER)
-        val application: Application,
-
         @Embedded
-        val secret: Secret
-)
+        val secret: Secret,
+
+        name: ApplicationName,
+        visibility: Visibility
+) : Application(0, name, visibility, INSTANCE_MANAGER_STATIC_FILE_NAME)
 
 @Embeddable
 data class Secret(
