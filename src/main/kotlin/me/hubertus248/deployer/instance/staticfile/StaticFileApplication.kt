@@ -3,6 +3,7 @@ package me.hubertus248.deployer.instance.staticfile
 import me.hubertus248.deployer.data.entity.Application
 import javax.persistence.*
 
+//TODO extend Application
 @Entity
 class StaticFileApplication(
         @Id

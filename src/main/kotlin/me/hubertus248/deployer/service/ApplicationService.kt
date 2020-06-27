@@ -2,10 +2,12 @@ package me.hubertus248.deployer.service
 
 import me.hubertus248.deployer.data.entity.Application
 import me.hubertus248.deployer.data.entity.Visibility
+import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.InstanceManagerName
 import me.hubertus248.deployer.reposiotry.ApplicationRepository
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import javax.transaction.Transactional
 
 interface ApplicationService {
     fun createApplication(name: String, visibility: Visibility, managerName: InstanceManagerName): Long
@@ -23,12 +25,15 @@ class ApplicationServiceImpl(
         private val instanceManagerService: InstanceManagerService
 ) : ApplicationService {
 
+    @Transactional
     override fun createApplication(name: String, visibility: Visibility, managerName: InstanceManagerName): Long {
         //TODO check name empty
         //TODO check name not unique
+        val instanceManager = instanceManagerService.getManagerForName(managerName) ?: throw BadRequestException()
         val newApplication = Application(0, name, visibility, managerName)
 
         applicationRepository.save(newApplication)
+        instanceManager.registerApplication(newApplication)
         return newApplication.id
     }
 

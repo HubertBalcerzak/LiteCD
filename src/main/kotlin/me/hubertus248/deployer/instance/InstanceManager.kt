@@ -6,17 +6,25 @@ import org.springframework.data.domain.Pageable
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
-interface InstanceManager {
+abstract class InstanceManager {
 
-    fun getFriendlyName(): String
+    abstract fun getFriendlyName(): String
 
-    fun getUniqueName(): InstanceManagerName
+    abstract fun getUniqueName(): InstanceManagerName
 
-    fun registerApplication(application: Application)
+    abstract fun registerApplication(application: Application)
 
-    fun listInstances(appId: Long, pageable: Pageable): List<Instance>
+    abstract fun listInstances(appId: Long, pageable: Pageable): List<Instance>
 
-    fun getAvailableFeatures(): Set<InstanceManagerFeature>
+    abstract fun getAvailableFeatures(): Set<InstanceManagerFeature>
+
+    abstract fun getOpenUrl(instance: Instance): String
+
+    fun supportsFeature(feature: InstanceManagerFeature): Boolean = getAvailableFeatures().contains(feature)
+
+    fun getCustomApplicationInfoFragment(): String {
+        throw NotImplementedError()
+    }
 }
 
 //TODO refactor like FileKey

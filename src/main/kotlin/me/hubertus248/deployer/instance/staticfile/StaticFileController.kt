@@ -1,18 +1,18 @@
 package me.hubertus248.deployer.instance.staticfile
 
-import me.hubertus248.deployer.BadRequestException
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import me.hubertus248.deployer.data.entity.InstanceKey
+import me.hubertus248.deployer.exception.BadRequestException
+import org.springframework.security.core.Authentication
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
+import javax.servlet.http.HttpServletResponse
 
 @RestController
 class StaticFileController(
         private val staticFileInstanceManager: StaticFileInstanceManager
 ) {
 
-    @PostMapping("/api/staticfile/create")
+    @PostMapping("/api/pub/staticfile/create")
     fun createInstance(@RequestParam app: Long,
                        @RequestParam key: String,
                        @RequestParam file: MultipartFile,
@@ -20,6 +20,12 @@ class StaticFileController(
                        @RequestHeader("secret") secretHeader: String?) {
         val actualSecret = Secret(secret ?: secretHeader ?: throw BadRequestException())
 
-        staticFileInstanceManager.createInstance(app, actualSecret, file, key)
+        staticFileInstanceManager.createInstance(app, actualSecret, file, InstanceKey(key))
+    }
+
+    @GetMapping("/open/staticfile/{instanceId}")
+    fun openInstance(@PathVariable instanceId: Long, authentication: Authentication, httpServletResponse: HttpServletResponse) {
+//TODO require authentication for restricted apps
+        staticFileInstanceManager.openInstance(instanceId, httpServletResponse)
     }
 }

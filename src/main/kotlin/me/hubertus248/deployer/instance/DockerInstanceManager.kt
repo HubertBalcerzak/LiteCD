@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
 @Component
-class DockerInstanceManager() : InstanceManager {
+class DockerInstanceManager() : InstanceManager() {
 
     override fun getFriendlyName(): String = "Docker manager"
 
@@ -20,6 +20,10 @@ class DockerInstanceManager() : InstanceManager {
     }
 
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getOpenUrl(instance: Instance): String {
         TODO("Not yet implemented")
     }
 }

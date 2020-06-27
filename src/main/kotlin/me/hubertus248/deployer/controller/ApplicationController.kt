@@ -1,10 +1,11 @@
 package me.hubertus248.deployer.controller
 
-import me.hubertus248.deployer.NotFoundException
+import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.data.dto.CreateApplicationDTO
 import me.hubertus248.deployer.security.Authenticated
 import me.hubertus248.deployer.service.ApplicationService
 import me.hubertus248.deployer.service.InstanceManagerService
+import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Controller
@@ -52,7 +53,11 @@ class ApplicationController(
     fun getApp(@PathVariable appId: Long, model: Model, authentication: Authentication?): String {
         val application = applicationService.findApplication(appId, authentication?.isAuthenticated ?: false)
                 ?: throw NotFoundException()
+        val instanceManager = instanceManagerService.getManagerForApplication(application)
+
         model.addAttribute("app", application)
+        model.addAttribute("instanceManager", instanceManager)
+        model.addAttribute("instances", instanceManager.listInstances(application.id, PageRequest.of(0, 10)))
         return "app"
     }
 }

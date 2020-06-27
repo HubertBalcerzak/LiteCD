@@ -16,4 +16,6 @@ interface StaticFileInstanceRepository : JpaRepository<StaticFileInstance, Long>
         from StaticFileInstance i where i.staticFileApplication.application.id = ?1
     """)
     fun findAllByApplicationId(appId: Long, pageable: Pageable): List<StaticFileInstance>
+
+    fun findFirstById(id: Long): StaticFileInstance?
 }

@@ -1,22 +1,26 @@
 package me.hubertus248.deployer.data.entity
 
-import javax.persistence.Access
-import javax.persistence.AccessType
-import javax.persistence.Column
-import javax.persistence.Embeddable
+import javax.persistence.*
 
-interface Instance{
-        fun getName(): String
-}
+@Entity
+abstract class Instance(
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        open val id: Long,
+
+        @Embedded
+        open val key: InstanceKey
+)
+
 
 @Embeddable
 data class InstanceKey(
         @Access(AccessType.FIELD)
-        @Column(name = "instanceKey", nullable = false, unique = false)
+        @Column(name = "instanceKey", nullable = false, unique = false, length = 255)
         val value: String
-){
-        init {
-                require(value.isNotBlank())
-                require(value.length in 3..128)
-        }
+) {
+    init {
+        require(value.isNotBlank())
+        require(value.length in 3..128)
+    }
 }
