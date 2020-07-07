@@ -97,9 +97,10 @@ class StaticFileInstanceManagerImpl(
     }
 
     override fun listInstances(appId: Long, pageable: Pageable): List<Instance> {
-        return staticFileInstanceRepository.findAllById(appId, pageable)
+        return staticFileInstanceRepository.findAllById(appId, pageable)//TODO w8, that's wrong
     }
 
+    //TODO implement custom application info
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(InstanceManagerFeature.CUSTOM_APPLICATION_INFO)
 
     override fun getOpenUrl(instance: Instance): String = "/open/staticfile/${instance.id}"
