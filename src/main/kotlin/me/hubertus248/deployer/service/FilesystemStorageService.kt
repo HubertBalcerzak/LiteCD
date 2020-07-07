@@ -13,6 +13,7 @@ import java.io.FileOutputStream
 import java.io.InputStream
 import java.lang.IllegalArgumentException
 import java.lang.IllegalStateException
+import java.nio.file.Path
 import java.nio.file.Paths
 import javax.annotation.PostConstruct
 import javax.transaction.Transactional
@@ -39,6 +40,7 @@ class FilesystemStorageServiceImpl(
     private val util: Util = Util()
 
     @Value("\${deployer.filesystem-storage-path}")
+    private lateinit var dataRoot: String
     private lateinit var dataStorePath: String
 
     @PostConstruct
@@ -47,6 +49,7 @@ class FilesystemStorageServiceImpl(
     }
 
     private fun createDataStore() {
+        dataStorePath = Path.of(dataRoot, "staticFiles").toString()
         val dataStoreRootDir = File(dataStorePath)
         if (dataStoreRootDir.exists()) {
             if (dataStoreRootDir.isDirectory) return
