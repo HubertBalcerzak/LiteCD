@@ -16,7 +16,7 @@ abstract class Instance(
 @Embeddable
 data class InstanceKey(
         @Access(AccessType.FIELD)
-        @Column(name = "instanceKey", nullable = false, unique = false, length = 255)
+        @Column(name = "instanceKey", nullable = false, unique = false, length = 130)
         val value: String
 ) {
     init {

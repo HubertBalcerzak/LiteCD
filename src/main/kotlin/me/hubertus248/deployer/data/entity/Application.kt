@@ -1,6 +1,7 @@
 package me.hubertus248.deployer.data.entity
 
 import me.hubertus248.deployer.instance.InstanceManagerName
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -20,7 +21,10 @@ abstract class Application(
         open val manager: InstanceManagerName,
 
         @OneToMany(fetch = FetchType.LAZY)
-        open val instances: Set<Instance> = emptySet()
+        open val instances: Set<Instance> = emptySet(),
+
+        @Column
+        open val creationDateTime: LocalDateTime = LocalDateTime.now()
 )
 
 enum class Visibility {

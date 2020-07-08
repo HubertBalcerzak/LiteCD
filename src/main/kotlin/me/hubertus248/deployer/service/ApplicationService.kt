@@ -6,6 +6,8 @@ import me.hubertus248.deployer.data.entity.Visibility
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.InstanceManagerName
 import me.hubertus248.deployer.reposiotry.ApplicationRepository
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -26,12 +28,15 @@ class ApplicationServiceImpl(
         private val instanceManagerService: InstanceManagerService
 ) : ApplicationService {
 
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+
     @Transactional
     override fun createApplication(name: ApplicationName, visibility: Visibility, managerName: InstanceManagerName): Long {
         //TODO check name empty
         //TODO check name not unique
         val instanceManager = instanceManagerService.getManagerForName(managerName) ?: throw BadRequestException()
         val newApplication = instanceManager.registerApplication(name, visibility)
+        logger.info("Created new application '$name' of type '${instanceManager.getFriendlyName()}'")
         return newApplication.id
     }
 

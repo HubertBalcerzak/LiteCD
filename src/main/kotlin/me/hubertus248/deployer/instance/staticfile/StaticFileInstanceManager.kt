@@ -10,6 +10,8 @@ import me.hubertus248.deployer.instance.InstanceManagerName
 import me.hubertus248.deployer.service.FilesystemStorageService
 import me.hubertus248.deployer.util.Util
 import org.apache.commons.io.IOUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.http.ContentDisposition
 import org.springframework.stereotype.Component
@@ -36,6 +38,7 @@ class StaticFileInstanceManagerImpl(
 ) : InstanceManager(), StaticFileInstanceManager {
 
     private val util: Util = Util()
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     override fun createInstance(appId: Long, secret: Secret, file: MultipartFile, instanceKey: InstanceKey) {
         val staticFileApplication: StaticFileApplication = staticFileApplicationRepository.findFirstById(appId)
@@ -59,6 +62,8 @@ class StaticFileInstanceManagerImpl(
             val newInstance = StaticFileInstance(metadata, staticFileApplication, instanceKey)
             staticFileInstanceRepository.save(newInstance)
         }
+
+        logger.info("Created new Static File instance with key ${instanceKey.value}, for app ${staticFileApplication.name}")
 
     }
 

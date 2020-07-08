@@ -1,6 +1,5 @@
-package me.hubertus248.deployer.instance.spring
+package me.hubertus248.deployer.instance.spring.instance
 
-import me.hubertus248.deployer.instance.staticfile.StaticFileInstance
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository

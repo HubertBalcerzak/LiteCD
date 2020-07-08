@@ -1,4 +1,4 @@
-package me.hubertus248.deployer.instance.spring
+package me.hubertus248.deployer.instance.spring.instance
 
 import me.hubertus248.deployer.data.entity.Instance
 import me.hubertus248.deployer.data.entity.InstanceKey

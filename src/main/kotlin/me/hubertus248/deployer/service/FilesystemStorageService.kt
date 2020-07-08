@@ -68,7 +68,7 @@ class FilesystemStorageServiceImpl(
 
         val file = getFileFromKey(key.value)
 
-        if (file.exists()) {
+        if (file.exists()) {//TODO should generate illegalStateException instead
             if (file.isDirectory || !file.isFile)
                 throwExceptionDataStoreCorrupted(key.value)
             file.delete()
@@ -78,7 +78,7 @@ class FilesystemStorageServiceImpl(
         val metadata = FilesystemFileMetadata(0, key, filename, contentType)
         filesystemFileMetadataRepository.save(metadata)
 
-        file.parentFile.mkdirs()
+        file.parentFile.mkdirs()//TODO check if failed
 
         val outputStream = FileOutputStream(file)
         IOUtils.copyLarge(inputStream, outputStream)
@@ -117,7 +117,7 @@ class FilesystemStorageServiceImpl(
         if (file.isDirectory || !file.isFile)
             throwExceptionDataStoreCorrupted(fileKey.value)
 
-        file.delete()
+        file.delete()//TODO check if failed
         deleteDirIfEmpty(file.parentFile)
         deleteDirIfEmpty(file.parentFile.parentFile)
 
