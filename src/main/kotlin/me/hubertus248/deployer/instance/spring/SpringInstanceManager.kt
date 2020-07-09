@@ -32,10 +32,12 @@ class SpringInstanceManager(
     }
 
     override fun listInstances(appId: Long, pageable: Pageable): List<Instance> {
-        return springInstanceRepository.findAllByApplication_Id(appId, pageable)//TODO fix query
+        return springInstanceRepository.findAllByApplication_Id(appId, pageable)
     }
 
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(InstanceManagerFeature.CUSTOM_APPLICATION_INFO)
 
     override fun getOpenUrl(instance: Instance): String = "/open/spring/${instance.id}"
+
+    override fun getCustomApplicationInfoFragment(): String = "application/spring/springApplicationInfo.html"
 }

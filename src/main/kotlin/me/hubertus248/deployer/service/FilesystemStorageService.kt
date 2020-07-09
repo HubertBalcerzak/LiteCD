@@ -64,15 +64,16 @@ class FilesystemStorageServiceImpl(
                           filename: String,
                           contentType: String
     ): FilesystemFileMetadata {
-        val key = FileKey(util.secureReadableRandomString(10))
+        val key = FileKey(util.secureReadableRandomString(24))
 
         val file = getFileFromKey(key.value)
 
         if (file.exists()) {//TODO should generate illegalStateException instead
-            if (file.isDirectory || !file.isFile)
-                throwExceptionDataStoreCorrupted(key.value)
-            file.delete()
-            filesystemFileMetadataRepository.deleteAllByFileKey(key)
+//            if (file.isDirectory || !file.isFile)
+//                throwExceptionDataStoreCorrupted(key.value)
+//            file.delete()
+//            filesystemFileMetadataRepository.deleteAllByFileKey(key)
+            throw IllegalStateException("File for generated key already exists")
         }
 
         val metadata = FilesystemFileMetadata(0, key, filename, contentType)
@@ -121,7 +122,8 @@ class FilesystemStorageServiceImpl(
         deleteDirIfEmpty(file.parentFile)
         deleteDirIfEmpty(file.parentFile.parentFile)
 
-        filesystemFileMetadataRepository.deleteAllByFileKey(metadata.fileKey)
+        metadata.deleted = true
+        filesystemFileMetadataRepository.save(metadata)
     }
 
     override fun checkFileExists(fileKey: FileKey): Boolean {

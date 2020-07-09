@@ -58,7 +58,8 @@ class AvailableSpringInstanceServiceImpl(
                 ?: throw BadRequestException()
 
         val fileKey = availableInstance.artifact.fileKey
-        availableSpringInstanceRepository.delete(availableInstance)
+        availableInstance.deleted = true
+        availableSpringInstanceRepository.save(availableInstance)
         filesystemStorageService.deleteFile(fileKey)
 
     }

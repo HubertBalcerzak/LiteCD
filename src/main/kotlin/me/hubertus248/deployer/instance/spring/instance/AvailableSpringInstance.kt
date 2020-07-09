@@ -25,6 +25,9 @@ class AvailableSpringInstance(
         val creationTime: LocalDateTime,
 
         @Column
-        var lastUpdate: LocalDateTime
+        var lastUpdate: LocalDateTime,
+
+        @Column
+        var deleted: Boolean = false
 
 )

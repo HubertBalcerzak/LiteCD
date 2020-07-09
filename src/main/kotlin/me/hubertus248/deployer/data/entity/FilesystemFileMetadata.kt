@@ -15,7 +15,10 @@ class FilesystemFileMetadata(
         val filename: String,
 
         @Column(nullable = false, unique = false, length = 255)
-        val contentType: String
+        val contentType: String,
+
+        @Column(nullable = false, updatable = true)
+        var deleted: Boolean = false
 )
 
 @Embeddable
