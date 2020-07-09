@@ -36,7 +36,7 @@ class ApplicationServiceImpl(
         //TODO check name not unique
         val instanceManager = instanceManagerService.getManagerForName(managerName) ?: throw BadRequestException()
         val newApplication = instanceManager.registerApplication(name, visibility)
-        logger.info("Created new application '$name' of type '${instanceManager.getFriendlyName()}'")
+        logger.info("Created new application '${name.value}' of type '${instanceManager.getFriendlyName()}'")
         return newApplication.id
     }
 

@@ -5,6 +5,10 @@ import javax.persistence.Embeddable
 
 @Embeddable
 data class Secret(
-        @Column(length = 255, updatable = true, unique = false, nullable = false)
-        var secret: String
-)
+        @Column(length = 255, updatable = true, unique = false, nullable = false, name = "secret")
+        val value: String
+) {
+    init {
+        require(value.isNotBlank())
+    }
+}

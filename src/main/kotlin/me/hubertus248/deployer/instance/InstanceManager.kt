@@ -26,7 +26,7 @@ abstract class InstanceManager {
 
     fun supportsFeature(feature: InstanceManagerFeature): Boolean = getAvailableFeatures().contains(feature)
 
-    fun getCustomApplicationInfoFragment(): String {
+    open fun getCustomApplicationInfoFragment(): String {
         throw NotImplementedError()
     }
 }
@@ -35,7 +35,7 @@ abstract class InstanceManager {
 @Embeddable
 data class InstanceManagerName(
         @Access(AccessType.FIELD)
-        @Column(length = 512)
+        @Column(length = 512, name = "instanceManagerName")
         val value: String
 ) {
     init {

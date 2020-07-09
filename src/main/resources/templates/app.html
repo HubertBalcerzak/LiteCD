@@ -9,12 +9,27 @@
 
 <section>
   <div th:replace="fragments/navbar :: navbar"></div>
+  <div sec:authorize="isAuthenticated()"
+       th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}">
+    <div th:replace="${instanceManager.getCustomApplicationInfoFragment()}::customApplicationInfo"></div>
+  </div>
 
   <section>
     <div class="container">
       <div class="row pb-3">
         <h3 class="col" th:text="${app.name.value}"></h3>
+        <button sec:authorize="isAuthenticated()"
+
+                th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
+                type="button"
+                class="btn btn-primary float-right"
+                data-toggle="modal"
+                data-target="#customApplicationInfo">
+          Details
+        </button>
+        <!--        TODO restrict to admin-->
       </div>
+
 
       <div class="row">
         <div class="col">
@@ -26,10 +41,10 @@
             <p th:if="${instances.isEmpty()}">There are no running instances</p>
             <ul class="list-group col">
               <li th:each="instance: ${instances}" class="list-group-item d-flex justify-content-between">
-                  <p th:text="${instance.key.value}"></p>
+                <p th:text="${instance.key.value}"></p>
                 <div>
                   <a class="btn btn-primary" th:href="${instanceManager.getOpenUrl(instance)}">Open</a>
-                  <a class="btn btn-secondary disabled" >Configure</a>
+                  <a class="btn btn-secondary disabled">Configure</a>
                   <a class="btn btn-danger disabled">Delete</a>
                 </div>
               </li>

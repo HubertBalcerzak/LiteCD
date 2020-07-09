@@ -1,5 +1,6 @@
 package me.hubertus248.deployer.data.entity
 
+import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.InstanceManagerName
 import java.time.LocalDateTime
 import javax.persistence.*
@@ -38,7 +39,11 @@ data class ApplicationName(
         val value: String
 ) {
     init {
-        require(value.isNotBlank())
-        require(value.all { it.isLetterOrDigit() })
+        try {
+            require(value.isNotBlank())
+            require(value.all { it.isLetterOrDigit()  || "_ -".contains(it)})
+        }catch (e: IllegalArgumentException){
+            throw BadRequestException()
+        }
     }
 }
