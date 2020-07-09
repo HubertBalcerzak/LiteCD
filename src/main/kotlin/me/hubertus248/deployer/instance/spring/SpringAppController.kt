@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile
 @Controller
 class SpringAppController() {
 
-    @PostMapping("/api/pub/staticfile/create/add")
+    @PostMapping("/api/pub/spring/create/add")
     fun uploadArtifact(@RequestParam app: Long,
                        @RequestParam key: String,
                        @RequestParam file: MultipartFile,

@@ -46,7 +46,7 @@ class StaticFileInstanceManagerImpl(
 
         if (secret != staticFileApplication.secret) throw UnauthorizedException()
 
-        val instance = staticFileInstanceRepository.findFirstByKeyAndStaticFileApplication(instanceKey,
+        val instance = staticFileInstanceRepository.findFirstByKeyAndApplication(instanceKey,
                 staticFileApplication)
 
         val metadata = filesystemStorageService.saveFile(file.inputStream,
@@ -63,7 +63,7 @@ class StaticFileInstanceManagerImpl(
             staticFileInstanceRepository.save(newInstance)
         }
 
-        logger.info("Created new Static File instance with key ${instanceKey.value}, for app ${staticFileApplication.name}")
+        logger.info("Created new Static File instance with key ${instanceKey.value}, for app ${staticFileApplication.name.value}")
 
     }
 
@@ -102,7 +102,7 @@ class StaticFileInstanceManagerImpl(
     }
 
     override fun listInstances(appId: Long, pageable: Pageable): List<Instance> {
-        return staticFileInstanceRepository.findAllByStaticFileApplication_Id(appId, pageable)
+        return staticFileInstanceRepository.findAllByApplication_Id(appId, pageable)
     }
 
     //TODO implement custom application info
@@ -110,5 +110,5 @@ class StaticFileInstanceManagerImpl(
 
     override fun getOpenUrl(instance: Instance): String = "/open/staticfile/${instance.id}"
 
-    override fun getCustomApplicationInfoFragment(): String  = "application/staticfile/staticFileApplicationInfo.html"
+    override fun getCustomApplicationInfoFragment(): String = "application/staticfile/staticFileApplicationInfo.html"
 }

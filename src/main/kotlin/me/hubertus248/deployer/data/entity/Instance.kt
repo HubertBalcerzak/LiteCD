@@ -9,7 +9,10 @@ abstract class Instance(
         open val id: Long,
 
         @Embedded
-        open val key: InstanceKey
+        open val key: InstanceKey,
+
+        @ManyToOne
+        open val application: Application
 )
 
 

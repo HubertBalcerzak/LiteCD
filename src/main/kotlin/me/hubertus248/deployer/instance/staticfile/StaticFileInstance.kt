@@ -10,7 +10,6 @@ class StaticFileInstance(
         @OneToOne
         var fileMetadata: FilesystemFileMetadata,
 
-        @ManyToOne
-        val staticFileApplication: StaticFileApplication,
+        staticFileApplication: StaticFileApplication,
         instanceKey: InstanceKey
-) : Instance(0, instanceKey)
+) : Instance(0, instanceKey, staticFileApplication)
