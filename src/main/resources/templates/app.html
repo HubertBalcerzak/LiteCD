@@ -49,16 +49,25 @@
                 </div>
               </li>
             </ul>
+
           </div>
-          <!--          <div class="col">-->
-          <!--            <div class="row">-->
-          <!--              <h5 class="col">Create Instance:</h5>-->
-          <!--              <div class="col">-->
-          <!--                &lt;!&ndash;              TODO: hide when not possible&ndash;&gt;-->
-          <!--                <a href="#" class="btn btn-primary">Manual creation</a>-->
-          <!--              </div>-->
-          <!--            </div>-->
-          <!--          </div>-->
+        </div>
+        <div class="col"
+             th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST)}">
+          <div class="row">
+            <h5 class="col">Create Instance:</h5>
+          </div>
+          <div class="row">
+            <p th:if="${possibleInstances.isEmpty()}">There are no available templates</p>
+            <ul class="list-group col">
+              <li th:each="instance: ${possibleInstances}" class="list-group-item d-flex justify-content-between">
+                <p th:text="${instance.key.value}"></p>
+                <div>
+                  <a class="btn btn-primary" th:href="|/api/start/${app.id}?key=${instance.key.value}|">Start</a>
+                </div>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
 

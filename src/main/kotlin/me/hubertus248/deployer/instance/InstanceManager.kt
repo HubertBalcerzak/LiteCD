@@ -1,9 +1,7 @@
 package me.hubertus248.deployer.instance
 
-import me.hubertus248.deployer.data.entity.Application
-import me.hubertus248.deployer.data.entity.ApplicationName
-import me.hubertus248.deployer.data.entity.Instance
-import me.hubertus248.deployer.data.entity.Visibility
+import me.hubertus248.deployer.data.dto.AvailableInstance
+import me.hubertus248.deployer.data.entity.*
 import org.springframework.data.domain.Pageable
 import javax.persistence.Access
 import javax.persistence.AccessType
@@ -26,9 +24,9 @@ abstract class InstanceManager {
 
     fun supportsFeature(feature: InstanceManagerFeature): Boolean = getAvailableFeatures().contains(feature)
 
-    open fun getCustomApplicationInfoFragment(): String {
-        throw NotImplementedError()
-    }
+    open fun getCustomApplicationInfoFragment(): String = throw NotImplementedError()
+
+    open fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> = throw NotImplementedError()
 }
 
 //TODO refactor like FileKey

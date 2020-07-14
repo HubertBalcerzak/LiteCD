@@ -3,6 +3,7 @@ package me.hubertus248.deployer.controller
 import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.data.dto.CreateApplicationDTO
 import me.hubertus248.deployer.data.entity.ApplicationName
+import me.hubertus248.deployer.instance.InstanceManagerFeature
 import me.hubertus248.deployer.security.Authenticated
 import me.hubertus248.deployer.service.ApplicationService
 import me.hubertus248.deployer.service.InstanceManagerService
@@ -58,7 +59,12 @@ class ApplicationController(
 
         model.addAttribute("app", application)
         model.addAttribute("instanceManager", instanceManager)
-        model.addAttribute("instances", instanceManager.listInstances(application.id, PageRequest.of(0, 10)))
+        model.addAttribute("instances", instanceManager.listInstances(application.id, PageRequest.of(0, 50)))//TODO pagination
+
+        if (instanceManager.supportsFeature(InstanceManagerFeature.POSSIBLE_INSTANCE_LIST)) {
+            model.addAttribute("possibleInstances",
+                    instanceManager.getPossibleInstanceList(application.id, PageRequest.of(0, 50)))//TODO pagination
+        }
         return "app"
     }
 }

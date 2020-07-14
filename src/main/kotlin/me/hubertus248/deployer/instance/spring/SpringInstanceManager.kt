@@ -1,11 +1,13 @@
 package me.hubertus248.deployer.instance.spring
 
+import me.hubertus248.deployer.data.dto.AvailableInstance
 import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.instance.InstanceManager
 import me.hubertus248.deployer.instance.InstanceManagerFeature
 import me.hubertus248.deployer.instance.InstanceManagerName
 import me.hubertus248.deployer.instance.spring.application.SpringApplication
 import me.hubertus248.deployer.instance.spring.application.SpringApplicationRepository
+import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstanceService
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.util.Util
 import org.springframework.data.domain.Pageable
@@ -17,7 +19,8 @@ val INSTANCE_MANAGER_SPRING_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_SP
 @Component
 class SpringInstanceManager(
         private val springApplicationRepository: SpringApplicationRepository,
-        private val springInstanceRepository: SpringInstanceRepository
+        private val springInstanceRepository: SpringInstanceRepository,
+        private val availableSpringInstanceService: AvailableSpringInstanceService
 ) : InstanceManager() {
     private val util = Util()
 
@@ -35,9 +38,14 @@ class SpringInstanceManager(
         return springInstanceRepository.findAllByApplication_Id(appId, pageable)
     }
 
-    override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(InstanceManagerFeature.CUSTOM_APPLICATION_INFO)
+    override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(
+            InstanceManagerFeature.CUSTOM_APPLICATION_INFO,
+            InstanceManagerFeature.POSSIBLE_INSTANCE_LIST)
 
     override fun getOpenUrl(instance: Instance): String = "/open/spring/${instance.id}"
 
     override fun getCustomApplicationInfoFragment(): String = "application/spring/springApplicationInfo.html"
+
+    override fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> =
+            availableSpringInstanceService.listArtifacts(appId, pageable).map { AvailableInstance(it.key, it.lastUpdate) }
 }

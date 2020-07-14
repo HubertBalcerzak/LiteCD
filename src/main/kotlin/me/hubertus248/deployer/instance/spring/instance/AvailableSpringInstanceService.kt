@@ -49,7 +49,7 @@ class AvailableSpringInstanceServiceImpl(
             val newAvailableSpringInstance = AvailableSpringInstance(0, savedFileMeta, instanceKey, app, LocalDateTime.now(), LocalDateTime.now())
             availableSpringInstanceRepository.save(newAvailableSpringInstance)
         }
-        logger.info("Added available instance with key '${instanceKey.value}' for app ''")
+        logger.info("Added available instance with key '${instanceKey.value}' for app '${app.name.value}'")
     }
 
     @Transactional
