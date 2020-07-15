@@ -13,6 +13,7 @@ import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstanceS
 import me.hubertus248.deployer.instance.spring.instance.SpringInstance
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.service.FilesystemStorageService
+import me.hubertus248.deployer.service.SubProcessService
 import me.hubertus248.deployer.service.WorkspaceService
 import me.hubertus248.deployer.util.Util
 import org.springframework.data.domain.Pageable
@@ -21,6 +22,7 @@ import java.lang.Exception
 import java.lang.IllegalStateException
 import java.nio.file.Files
 import java.nio.file.Path
+import javax.swing.Spring
 import javax.transaction.Transactional
 
 val INSTANCE_MANAGER_SPRING_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_SPRING")
@@ -32,7 +34,8 @@ class SpringInstanceManager(
         private val springInstanceRepository: SpringInstanceRepository,
         private val availableSpringInstanceService: AvailableSpringInstanceService,
         private val workspaceService: WorkspaceService,
-        private val filesystemStorageService: FilesystemStorageService
+        private val filesystemStorageService: FilesystemStorageService,
+        private val subProcessService: SubProcessService
 ) : InstanceManager() {
     private val util = Util()
 
@@ -74,15 +77,25 @@ class SpringInstanceManager(
 
         try {
             prepareWorkspace(newWorkspace, instanceTemplate)
-            return SpringInstance(newWorkspace, instanceKey, application)
+            return SpringInstance(newWorkspace, null, instanceKey, application)
         } catch (e: Exception) {
             workspaceService.deleteWorkspace(newWorkspace)
             throw e
         }
     }
 
+    @Transactional
     override fun startInstance(instance: Instance) {
-
+        val springInstance = instance as SpringInstance
+        updateInstanceStatus(springInstance)
+        val workspaceRootPath = workspaceService.getWorkspaceRoot(springInstance.workspace)
+        springInstance.process = subProcessService.startProcess(
+                workspaceRootPath.toFile(),
+                Path.of(workspaceRootPath.toString(), "log.txt").toFile(),
+                listOf("java", "-jar", "app.jar")//TODO allow customization
+        )
+        springInstance.status = InstanceStatus.RUNNING
+        springInstanceRepository.save(springInstance)
     }
 
     private fun prepareWorkspace(workspace: Workspace, instanceTemplate: AvailableSpringInstance) {
@@ -91,5 +104,15 @@ class SpringInstanceManager(
         Files.copy(filesystemStorageService.getFileContent(instanceTemplate.artifact.fileKey)
                 ?: throw IllegalStateException("Artifact not found"),
                 Path.of(workspaceRoot.toString(), "app.jar"))
+    }
+
+    private fun updateInstanceStatus(instance: SpringInstance) {
+        if (instance.status == InstanceStatus.STOPPED) return
+        val process = instance.process
+        if(process == null || subProcessService.getProcessStatus(process) == SubProcessStatus.DEAD){
+            instance.process = null
+            instance.status = InstanceStatus.STOPPED
+            springInstanceRepository.save(instance)
+        }
     }
 }

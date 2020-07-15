@@ -11,7 +11,7 @@ class SpringInstance(
         val workspace: Workspace,
 
         @OneToOne
-        val process: SubProcess?,
+        var process: SubProcess?,
 
         key: InstanceKey,
         application: SpringApplication,

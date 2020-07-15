@@ -15,7 +15,7 @@ abstract class Instance(
         open val application: Application,
 
         @Column
-        open val status: InstanceStatus
+        open var status: InstanceStatus
 )
 
 
