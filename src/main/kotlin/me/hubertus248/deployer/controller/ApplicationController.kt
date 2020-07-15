@@ -3,10 +3,12 @@ package me.hubertus248.deployer.controller
 import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.data.dto.CreateApplicationDTO
 import me.hubertus248.deployer.data.entity.ApplicationName
+import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.instance.InstanceManagerFeature
 import me.hubertus248.deployer.security.Authenticated
 import me.hubertus248.deployer.service.ApplicationService
 import me.hubertus248.deployer.service.InstanceManagerService
+import me.hubertus248.deployer.service.InstanceService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.security.core.Authentication
@@ -20,7 +22,8 @@ import java.security.Principal
 @Controller
 class ApplicationController(
         private val applicationService: ApplicationService,
-        private val instanceManagerService: InstanceManagerService
+        private val instanceManagerService: InstanceManagerService,
+        private val instanceService: InstanceService
 ) {
 
     @GetMapping("/apps")
@@ -68,8 +71,11 @@ class ApplicationController(
         return "app"
     }
 
+    //TODO restrict to admin/user (?)
+    @Authenticated
     @PostMapping("/app/{appId}/start")
-    fun start(@PathVariable appId: Long, @ModelAttribute key: String): RedirectView {
+    fun start(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        instanceService.createAndStart(appId, InstanceKey(key))
         return RedirectView("/app/$appId")
     }
 }

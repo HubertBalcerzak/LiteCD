@@ -88,6 +88,7 @@ class SpringInstanceManager(
     override fun startInstance(instance: Instance) {
         val springInstance = instance as SpringInstance
         updateInstanceStatus(springInstance)
+        if(springInstance.status == InstanceStatus.RUNNING) throw IllegalStateException("Instance already running")
         val workspaceRootPath = workspaceService.getWorkspaceRoot(springInstance.workspace)
         springInstance.process = subProcessService.startProcess(
                 workspaceRootPath.toFile(),

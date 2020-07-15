@@ -63,7 +63,8 @@
               <li th:each="instance: ${possibleInstances}" class="list-group-item d-flex justify-content-between">
                 <p th:text="${instance.key.value}"></p>
                 <div>
-                  <form th:action="|/app/${app.id}/start?key=${instance.key.value}|" method="post">
+                  <form th:action="|/app/${app.id}/start|" method="post">
+                    <input type="hidden" th:value="${instance.key.value}" name="key"/>
                     <input type="submit" class="btn btn-primary" value="Start"/>
                   </form>
                 </div>
