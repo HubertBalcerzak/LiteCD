@@ -5,7 +5,7 @@ import me.hubertus248.deployer.data.entity.ApplicationName
 import me.hubertus248.deployer.data.entity.Visibility
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.InstanceManagerName
-import me.hubertus248.deployer.reposiotry.ApplicationRepository
+import me.hubertus248.deployer.data.reposiotry.ApplicationRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable

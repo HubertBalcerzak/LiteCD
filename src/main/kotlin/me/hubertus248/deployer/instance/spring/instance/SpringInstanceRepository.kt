@@ -1,8 +1,6 @@
 package me.hubertus248.deployer.instance.spring.instance
 
-import me.hubertus248.deployer.reposiotry.InstanceRepository
-import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.repository.JpaRepository
+import me.hubertus248.deployer.data.reposiotry.InstanceRepository
 import org.springframework.stereotype.Repository
 
 @Repository

@@ -1,4 +1,4 @@
-package me.hubertus248.deployer.reposiotry
+package me.hubertus248.deployer.data.reposiotry
 
 import me.hubertus248.deployer.data.entity.FileKey
 import me.hubertus248.deployer.data.entity.FilesystemFileMetadata

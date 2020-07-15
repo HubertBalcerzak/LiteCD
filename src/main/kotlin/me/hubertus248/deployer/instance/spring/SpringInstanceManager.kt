@@ -81,6 +81,10 @@ class SpringInstanceManager(
         }
     }
 
+    override fun startInstance(instance: Instance) {
+
+    }
+
     private fun prepareWorkspace(workspace: Workspace, instanceTemplate: AvailableSpringInstance) {
 
         val workspaceRoot = workspaceService.getWorkspaceRoot(workspace)

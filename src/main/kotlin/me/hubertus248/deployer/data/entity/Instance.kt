@@ -12,7 +12,10 @@ abstract class Instance(
         open val key: InstanceKey,
 
         @ManyToOne
-        open val application: Application
+        open val application: Application,
+
+        @Column
+        open val status: InstanceStatus
 )
 
 
@@ -26,4 +29,9 @@ data class InstanceKey(
         require(value.isNotBlank())
         require(value.length in 3..128)
     }
+}
+
+enum class InstanceStatus {
+    STOPPED,
+    RUNNING
 }

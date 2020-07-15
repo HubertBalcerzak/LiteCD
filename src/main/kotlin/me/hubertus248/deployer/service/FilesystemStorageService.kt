@@ -2,7 +2,7 @@ package me.hubertus248.deployer.service
 
 import me.hubertus248.deployer.data.entity.FileKey
 import me.hubertus248.deployer.data.entity.FilesystemFileMetadata
-import me.hubertus248.deployer.reposiotry.FilesystemFileMetadataRepository
+import me.hubertus248.deployer.data.reposiotry.FilesystemFileMetadataRepository
 import me.hubertus248.deployer.util.Util
 import org.apache.commons.io.IOUtils
 import org.springframework.beans.factory.annotation.Value

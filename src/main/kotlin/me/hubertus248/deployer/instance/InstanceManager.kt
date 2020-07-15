@@ -29,6 +29,10 @@ abstract class InstanceManager {
     open fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> = throw NotImplementedError()
 
     open fun createInstance(appId: Long, instanceKey: InstanceKey): Instance = throw NotImplementedError()
+
+    open fun startInstance(instance: Instance) {
+        throw NotImplementedError()
+    }
 }
 
 //TODO refactor like FileKey

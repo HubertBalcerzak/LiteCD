@@ -1,7 +1,7 @@
 package me.hubertus248.deployer.service
 
 import me.hubertus248.deployer.data.entity.Workspace
-import me.hubertus248.deployer.reposiotry.WorkspaceRepository
+import me.hubertus248.deployer.data.reposiotry.WorkspaceRepository
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
