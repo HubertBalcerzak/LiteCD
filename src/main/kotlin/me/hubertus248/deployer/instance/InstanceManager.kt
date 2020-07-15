@@ -27,6 +27,8 @@ abstract class InstanceManager {
     open fun getCustomApplicationInfoFragment(): String = throw NotImplementedError()
 
     open fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> = throw NotImplementedError()
+
+    open fun createInstance(appId: Long, instanceKey: InstanceKey): Instance = throw NotImplementedError()
 }
 
 //TODO refactor like FileKey

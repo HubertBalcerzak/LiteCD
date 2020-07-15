@@ -67,4 +67,9 @@ class ApplicationController(
         }
         return "app"
     }
+
+    @PostMapping("/app/{appId}/start")
+    fun start(@PathVariable appId: Long, @ModelAttribute key: String): RedirectView {
+        return RedirectView("/app/$appId")
+    }
 }

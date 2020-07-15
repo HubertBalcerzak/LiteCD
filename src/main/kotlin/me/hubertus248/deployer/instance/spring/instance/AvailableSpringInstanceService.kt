@@ -4,6 +4,7 @@ import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.exception.UnauthorizedException
+import me.hubertus248.deployer.instance.spring.application.SpringApplication
 import me.hubertus248.deployer.instance.spring.application.SpringApplicationRepository
 import me.hubertus248.deployer.service.FilesystemStorageService
 import org.slf4j.LoggerFactory
@@ -19,6 +20,8 @@ interface AvailableSpringInstanceService {
     fun deleteArtifact(appId: Long, instanceKey: InstanceKey)
 
     fun listArtifacts(appId: Long, pageable: Pageable): List<AvailableSpringInstance>
+
+    fun findArtifact(springApplication: SpringApplication, instanceKey: InstanceKey): AvailableSpringInstance?
 }
 
 @Service
@@ -66,6 +69,10 @@ class AvailableSpringInstanceServiceImpl(
 
     override fun listArtifacts(appId: Long, pageable: Pageable): List<AvailableSpringInstance> {
         return availableSpringInstanceRepository.findAllByApplication_Id(appId, pageable)
+    }
+
+    override fun findArtifact(springApplication: SpringApplication, instanceKey: InstanceKey): AvailableSpringInstance? {
+        return availableSpringInstanceRepository.findFirstByApplicationAndKey(springApplication, instanceKey)
     }
 
 }
