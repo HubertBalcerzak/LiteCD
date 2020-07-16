@@ -27,6 +27,8 @@ dependencies {
 	implementation("org.keycloak:keycloak-spring-boot-starter:10.0.2")
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 	implementation("commons-fileupload:commons-fileupload:1.3.3")
+//	implementation("org.springframework.session:spring-session-jdbc")
+	runtimeOnly("com.h2database:h2:1.4.200")
 
 	runtimeOnly("mysql:mysql-connector-java")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
