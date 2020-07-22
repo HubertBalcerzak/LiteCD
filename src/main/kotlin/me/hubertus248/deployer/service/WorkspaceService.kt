@@ -37,10 +37,17 @@ class WorkspaceServiceImpl(
 
         val newWorkspaceRoot = getPathFromId(newWorkspace.id).toFile()
 
-        if (newWorkspaceRoot.exists())
-            throw IllegalStateException("Workspace folder (path ${newWorkspaceRoot.path}) already exists.")
+        if (newWorkspaceRoot.exists()) {
+            if (!newWorkspaceRoot.isDirectory)
+                throw IllegalStateException("Workspace root with path ${newWorkspaceRoot.path} exists and is not a directory.")
+            logger.warn("Workspace with path ${newWorkspaceRoot.path} already exists. Cleaning up.")
+            if (newWorkspaceRoot.listFiles()?.all { it.deleteRecursively() } != true)
+                throw IllegalStateException("Unable to delete workspace with path ${newWorkspaceRoot.path}")
+        }
 
-        newWorkspaceRoot.mkdirs()
+        if (newWorkspaceRoot.mkdirs()) {
+            throw IllegalStateException("Unable to create workspace root folder (path ${newWorkspaceRoot.path})")
+        }
         logger.info("New workspace (id ${newWorkspace.id}) created")
         return newWorkspace
     }
@@ -64,7 +71,7 @@ class WorkspaceServiceImpl(
     override fun getWorkspaceRoot(workspace: Workspace): Path {
         val path = getPathFromId(workspace.id)
 
-        if (!path.toFile().exists()) throw IllegalStateException("Workspace with if ${workspace.id} doesn't exist.")
+        if (!path.toFile().exists()) throw IllegalStateException("Workspace with id ${workspace.id} doesn't exist.")
 
         return path
     }

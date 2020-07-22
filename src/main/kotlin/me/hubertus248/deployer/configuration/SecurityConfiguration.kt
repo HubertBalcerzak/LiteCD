@@ -36,7 +36,7 @@ class SecurityConfiguration : KeycloakWebSecurityConfigurerAdapter() {
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
         super.configure(http)
-        http.csrf().ignoringAntMatchers("/api/pub/**")
+        http.csrf().ignoringAntMatchers("/api/pub/**", "/api/spring/**")
         //TODO refactor
         http.authorizeRequests()
                 .antMatchers("/login")
