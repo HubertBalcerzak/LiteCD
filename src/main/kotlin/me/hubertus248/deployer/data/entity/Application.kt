@@ -41,8 +41,8 @@ data class ApplicationName(
     init {
         try {
             require(value.isNotBlank())
-            require(value.all { it.isLetterOrDigit()  || "_ -".contains(it)})
-        }catch (e: IllegalArgumentException){
+            require(value.all { it.isLetterOrDigit() || "_ -".contains(it) })
+        } catch (e: IllegalArgumentException) {
             throw BadRequestException()
         }
     }

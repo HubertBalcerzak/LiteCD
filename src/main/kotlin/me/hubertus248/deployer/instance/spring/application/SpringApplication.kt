@@ -16,4 +16,4 @@ class SpringApplication(
 
         name: ApplicationName,
         visibility: Visibility
-) : Application(0, name, visibility, INSTANCE_MANAGER_SPRING_NAME)
+) : Application(0, name, visibility, INSTANCE_MANAGER_SPRING_NAME/*, subdomains = true*/)

@@ -37,7 +37,6 @@ class StaticFileInstanceManagerImpl(
         private val staticFileInstanceRepository: StaticFileInstanceRepository
 ) : InstanceManager(), StaticFileInstanceManager {
 
-    private val util: Util = Util()
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     override fun createInstance(appId: Long, secret: Secret, file: MultipartFile, instanceKey: InstanceKey) {
@@ -96,7 +95,7 @@ class StaticFileInstanceManagerImpl(
     override fun getUniqueName(): InstanceManagerName = INSTANCE_MANAGER_STATIC_FILE_NAME
 
     override fun registerApplication(name: ApplicationName, visibility: Visibility): Application {
-        val staticFileApplication = StaticFileApplication(Secret(util.secureAlphanumericRandomString(32)), name, visibility)
+        val staticFileApplication = StaticFileApplication(Secret(Util.secureAlphanumericRandomString(32)), name, visibility)
         staticFileApplicationRepository.save(staticFileApplication)
         return staticFileApplication
     }

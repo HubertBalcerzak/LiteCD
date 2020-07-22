@@ -2,6 +2,7 @@ package me.hubertus248.deployer.instance.spring.instance
 
 import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.instance.spring.application.SpringApplication
+import javax.persistence.Embedded
 import javax.persistence.Entity
 import javax.persistence.OneToOne
 
@@ -12,6 +13,12 @@ class SpringInstance(
 
         @OneToOne
         var process: SubProcess?,
+
+        @Embedded
+        var subdomain: DomainLabel,
+
+        @Embedded
+        var zuulMappingId: ZuulMappingId?,
 
         key: InstanceKey,
         application: SpringApplication,

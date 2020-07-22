@@ -14,4 +14,4 @@ class StaticFileApplication(
 
         name: ApplicationName,
         visibility: Visibility
-) : Application(0, name, visibility, INSTANCE_MANAGER_STATIC_FILE_NAME)
+) : Application(0, name, visibility, INSTANCE_MANAGER_STATIC_FILE_NAME/*, subdomains = false*/)

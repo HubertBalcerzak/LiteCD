@@ -37,8 +37,6 @@ class FilesystemStorageServiceImpl(
         private val filesystemFileMetadataRepository: FilesystemFileMetadataRepository
 ) : FilesystemStorageService {
 
-    private val util: Util = Util()
-
     @Value("\${deployer.filesystem-storage-path}")
     private lateinit var dataRoot: String
     private lateinit var dataStorePath: String
@@ -64,11 +62,11 @@ class FilesystemStorageServiceImpl(
                           filename: String,
                           contentType: String
     ): FilesystemFileMetadata {
-        val key = FileKey(util.secureReadableRandomString(24))
+        val key = FileKey(Util.secureReadableRandomString(24))
 
         val file = getFileFromKey(key.value)
 
-        if (file.exists()) {//TODO should generate illegalStateException instead
+        if (file.exists()) {
 //            if (file.isDirectory || !file.isFile)
 //                throwExceptionDataStoreCorrupted(key.value)
 //            file.delete()
