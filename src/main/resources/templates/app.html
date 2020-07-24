@@ -18,16 +18,24 @@
     <div class="container">
       <div class="row pb-3">
         <h3 class="col" th:text="${app.name.value}"></h3>
-        <button sec:authorize="isAuthenticated()"
-
-                th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
-                type="button"
-                class="btn btn-primary float-right"
-                data-toggle="modal"
-                data-target="#customApplicationInfo">
-          Details
-        </button>
-        <!--        TODO restrict to admin-->
+        <div class="btn-group float-right" role="group">
+          <button sec:authorize="isAuthenticated()"
+                  th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
+                  type="button"
+                  class="btn btn-primary"
+                  data-toggle="modal"
+                  data-target="#customApplicationInfo">
+            <!--        TODO restrict to admin-->
+            Details
+          </button>
+          <a sec:authorize="isAuthenticated()"
+             th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CONFIGURABLE_APPLICATION)}"
+             type="button"
+             class="btn btn-primary"
+             th:href="${instanceManager.configureApplicationUrl(app.id)}">
+            Configure
+          </a>
+        </div>
       </div>
 
 

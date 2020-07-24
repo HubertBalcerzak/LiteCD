@@ -63,7 +63,9 @@ class SpringInstanceManager(
 
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(
             InstanceManagerFeature.CUSTOM_APPLICATION_INFO,
-            InstanceManagerFeature.POSSIBLE_INSTANCE_LIST)
+            InstanceManagerFeature.POSSIBLE_INSTANCE_LIST,
+            InstanceManagerFeature.CONFIGURABLE_APPLICATION,
+            InstanceManagerFeature.CONFIGURABLE_INSTANCES)
 
     override fun getOpenUrl(instance: Instance): String = "$protocol://${(instance as SpringInstance).subdomain.value}.$domain"
 
@@ -85,7 +87,14 @@ class SpringInstanceManager(
 
         try {
             prepareWorkspace(newWorkspace, instanceTemplate)
-            return SpringInstance(newWorkspace, null, DomainLabel.randomLabel(), null, instanceKey, application)
+            return SpringInstance(newWorkspace,
+                    null,
+                    DomainLabel.randomLabel(),
+                    null,
+                    mutableSetOf(),
+                    null,
+                    instanceKey,
+                    application)
         } catch (e: Exception) {
             workspaceService.deleteWorkspace(newWorkspace)
             throw e
@@ -110,7 +119,6 @@ class SpringInstanceManager(
 
         springInstance.status = InstanceStatus.RUNNING
         springInstanceRepository.save(springInstance)
-        //TODO create zuul redirect
     }
 
     private fun prepareWorkspace(workspace: Workspace, instanceTemplate: AvailableSpringInstance) {
@@ -130,4 +138,8 @@ class SpringInstanceManager(
             springInstanceRepository.save(instance)
         }
     }
+
+    override fun configureApplicationUrl(appId: Long): String = "/spring/configureApp/${appId}"
+
+    override fun configureInstanceUrl(appId: Long, instanceId: Long): String = "/spring/configureInstance/$instanceId"
 }

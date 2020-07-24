@@ -4,6 +4,7 @@ import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.instance.spring.application.SpringApplication
 import javax.persistence.Embedded
 import javax.persistence.Entity
+import javax.persistence.OneToMany
 import javax.persistence.OneToOne
 
 @Entity
@@ -19,6 +20,12 @@ class SpringInstance(
 
         @Embedded
         var zuulMappingId: ZuulMappingId?,
+
+        @OneToMany
+        val environment: MutableSet<EnvironmentVariable>,
+
+        @Embedded
+        var port: Port?,
 
         key: InstanceKey,
         application: SpringApplication,

@@ -2,6 +2,7 @@ package me.hubertus248.deployer.instance
 
 import me.hubertus248.deployer.data.dto.AvailableInstance
 import me.hubertus248.deployer.data.entity.*
+import org.aspectj.weaver.ast.Not
 import org.springframework.data.domain.Pageable
 import javax.persistence.Access
 import javax.persistence.AccessType
@@ -22,6 +23,7 @@ abstract class InstanceManager {
 
     abstract fun getOpenUrl(instance: Instance): String
 
+    //TODO redesign application specific features
     fun supportsFeature(feature: InstanceManagerFeature): Boolean = getAvailableFeatures().contains(feature)
 
     open fun getCustomApplicationInfoFragment(): String = throw NotImplementedError()
@@ -33,6 +35,10 @@ abstract class InstanceManager {
     open fun startInstance(instance: Instance) {
         throw NotImplementedError()
     }
+
+    open fun configureApplicationUrl(appId: Long): String = throw NotImplementedError()
+
+    open fun configureInstanceUrl(appId: Long, instanceId: Long): String = throw NotImplementedError()
 }
 
 //TODO refactor like FileKey
@@ -49,5 +55,7 @@ data class InstanceManagerName(
 
 enum class InstanceManagerFeature {
     CUSTOM_APPLICATION_INFO,
-    POSSIBLE_INSTANCE_LIST
+    POSSIBLE_INSTANCE_LIST,
+    CONFIGURABLE_APPLICATION,
+    CONFIGURABLE_INSTANCES
 }
