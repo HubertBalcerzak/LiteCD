@@ -33,6 +33,7 @@ class ApplicationController(
         else
             model.addAttribute("applications", applicationService.listApplications(pageable))
 
+        model.addAttribute("instanceManagerService", instanceManagerService)
         return "apps"
     }
 

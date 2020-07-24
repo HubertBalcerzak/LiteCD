@@ -21,8 +21,17 @@
       </div>
       <!--TODO add pagination-->
       <div class="list-group">
-        <a th:each="app: ${applications}" class="list-group-item list-group-item-action" th:text="${app.name.value}"
-           th:href="${'/app/' + app.id}"></a>
+        <a th:each="app: ${applications}" class="list-group-item list-group-item-action flex" th:href="${'/app/' + app.id}">
+          <div class="container">
+            <div class="row">
+              <p class="col" th:text="${app.name.value}" style="margin-bottom: 0"></p>
+              <div class="col">
+                <span th:if="${app.visibility == T(me.hubertus248.deployer.data.entity.Visibility).PUBLIC}" class="badge badge-success float-right ml-3">Public</span>
+                <span class="badge badge-secondary float-right" th:text="${instanceManagerService.getManagerForApplication(app).getFriendlyName()}">Running</span>
+              </div>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   </section>

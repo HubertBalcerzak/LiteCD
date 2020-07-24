@@ -90,7 +90,7 @@ class StaticFileInstanceManagerImpl(
 
     }
 
-    override fun getFriendlyName(): String = "Static file manager"
+    override fun getFriendlyName(): String = "Static File Application"
 
     override fun getUniqueName(): InstanceManagerName = INSTANCE_MANAGER_STATIC_FILE_NAME
 
