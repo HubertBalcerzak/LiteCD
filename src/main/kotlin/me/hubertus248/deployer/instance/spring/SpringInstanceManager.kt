@@ -3,6 +3,7 @@ package me.hubertus248.deployer.instance.spring
 import me.hubertus248.deployer.data.dto.AvailableInstance
 import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.exception.BadRequestException
+import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.instance.InstanceManager
 import me.hubertus248.deployer.instance.InstanceManagerFeature
 import me.hubertus248.deployer.instance.InstanceManagerName
@@ -142,6 +143,68 @@ class SpringInstanceManager(
             instance.status = InstanceStatus.STOPPED
             springInstanceRepository.save(instance)
         }
+    }
+
+    @Transactional
+    override fun stopInstance(appId: Long, instanceKey: InstanceKey) {
+        val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
+        val instance = springInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
+                ?: throw NotFoundException()
+
+        stopInstance(instance)
+    }
+
+    @Transactional
+    override fun deleteInstance(appId: Long, instanceKey: InstanceKey) {
+        val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
+        val instance = springInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
+                ?: throw NotFoundException()
+
+        deleteInstance(instance, application)
+
+    }
+
+    @Transactional
+    override fun recreateInstance(appId: Long, instanceKey: InstanceKey) {
+        val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
+        val instance = springInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
+                ?: throw NotFoundException()
+
+        stopInstance(instance)
+
+        val instanceTemplate = availableSpringInstanceService.findArtifact(application, instanceKey)
+                ?: throw IllegalStateException("Instance template for application ${application.name.value} and key ${instance.key.value} does not exist")
+
+        workspaceService.clearWorkspace(instance.workspace)
+        prepareWorkspace(instance.workspace, instanceTemplate)
+        startInstance(instance)
+
+    }
+
+    private fun stopInstance(instance: SpringInstance) {
+        instance.process?.let { subProcessService.stopProcess(it) }
+        instance.port?.let { portProviderService.freePort(it) }
+        instance.zuulMappingId?.let { zuulService.removeMapping(it) }
+
+        instance.apply {
+            process = null
+            port = null
+            zuulMappingId = null
+            status = InstanceStatus.STOPPED
+        }
+        springInstanceRepository.save(instance)
+    }
+
+    private fun deleteInstance(instance: SpringInstance, application: SpringApplication) {
+        stopInstance(instance)
+
+        val instanceTemplate = availableSpringInstanceService.findArtifact(application, instance.key)
+                ?: throw IllegalStateException("Source template does not exist")
+
+        workspaceService.deleteWorkspace(instance.workspace)
+        springEnvironmentService.deleteInstanceEnvironment(instance)
+        instanceTemplate.actualInstance = null
+        springInstanceRepository.delete(instance)
     }
 
     override fun configureApplicationUrl(appId: Long): String = "/spring/configureApp/${appId}"

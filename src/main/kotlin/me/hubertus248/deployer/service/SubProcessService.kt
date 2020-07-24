@@ -62,7 +62,8 @@ class SubProcessServiceImpl(
 
     override fun stopProcess(process: SubProcess) {
         if (!processes.containsKey(process.processId)) return
-        processes[process.processId]?.destroyForcibly()
+        subProcessRepository.delete(process)
+        processes[process.processId]?.destroyForcibly()?.waitFor()
         processes.remove(process.processId)
     }
 

@@ -26,6 +26,8 @@ interface SpringEnvironmentService {
     fun getEnvironment(application: SpringApplication): Map<String, String>
 
     fun getEnvironment(instance: SpringInstance): Map<String, String>
+
+    fun deleteInstanceEnvironment(instance: SpringInstance)
 }
 
 @Service
@@ -61,7 +63,7 @@ class SpringEnvironmentServiceImpl(
         instance.environment.clear()
 
         application.defaultEnvironment
-                .map { EnvironmentVariable(0, it.name, EnvironmentVariableValue(replaceKeywords(it.value.value, instance))) }
+                .map { EnvironmentVariable(0, it.name, EnvironmentVariableValue(it.value.value)) }
                 .forEach {
                     environmentVariableRepository.save(it)
                     instance.environment.add(it)
@@ -75,6 +77,12 @@ class SpringEnvironmentServiceImpl(
 
     override fun getEnvironment(instance: SpringInstance): Map<String, String> {
         return mapOf(*instance.environment.map { Pair(it.name.value, replaceKeywords(it.value.value, instance)) }.toTypedArray())
+    }
+
+    @Transactional
+    override fun deleteInstanceEnvironment(instance: SpringInstance) {
+        instance.environment.forEach { environmentVariableRepository.delete(it) }
+        instance.environment.clear()
     }
 
     private fun replaceKeywords(input: String, instance: SpringInstance): String {

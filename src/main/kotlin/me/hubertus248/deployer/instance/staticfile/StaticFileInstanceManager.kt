@@ -104,10 +104,18 @@ class StaticFileInstanceManagerImpl(
         return staticFileInstanceRepository.findAllByApplication_Id(appId, pageable)
     }
 
-    //TODO implement custom application info
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(InstanceManagerFeature.CUSTOM_APPLICATION_INFO)
 
     override fun getOpenUrl(instance: Instance): String = "/open/staticfile/${instance.id}"
 
     override fun getCustomApplicationInfoFragment(): String = "application/staticfile/staticFileApplicationInfo.html"
+
+    override fun deleteInstance(appId: Long, instanceKey: InstanceKey) {
+        val application = staticFileApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
+        val instance = staticFileInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
+                ?: throw NotFoundException()
+
+        filesystemStorageService.deleteFile(instance.fileMetadata.fileKey)
+        staticFileInstanceRepository.delete(instance)
+    }
 }

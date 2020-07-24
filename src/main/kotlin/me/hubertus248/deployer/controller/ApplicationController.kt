@@ -111,7 +111,7 @@ class ApplicationController(
     @Authenticated
     @PostMapping("/app/{appId}/recreate")
     fun recreate(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        instanceService.recreate(appId, InstanceKey(key))
         return RedirectView("/app/$appId")
-
     }
 }

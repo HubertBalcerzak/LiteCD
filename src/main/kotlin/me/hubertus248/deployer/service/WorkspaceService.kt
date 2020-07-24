@@ -18,6 +18,8 @@ interface WorkspaceService {
     fun deleteWorkspace(workspace: Workspace)
 
     fun getWorkspaceRoot(workspace: Workspace): Path
+
+    fun clearWorkspace(workspace: Workspace)
 }
 
 @Service
@@ -45,9 +47,10 @@ class WorkspaceServiceImpl(
                 throw IllegalStateException("Unable to delete workspace with path ${newWorkspaceRoot.path}")
         }
 
-        if (newWorkspaceRoot.mkdirs()) {
-            throw IllegalStateException("Unable to create workspace root folder (path ${newWorkspaceRoot.path})")
-        }
+        newWorkspaceRoot.mkdirs()
+//        if (newWorkspaceRoot.mkdirs()) {
+//            throw IllegalStateException("Unable to create workspace root folder (path ${newWorkspaceRoot.path})")
+//        }
         logger.info("New workspace (id ${newWorkspace.id}) created")
         return newWorkspace
     }
@@ -65,7 +68,13 @@ class WorkspaceServiceImpl(
         }
 
         workspaceRepository.delete(workspace)
-        logger.info("Deleted workspace $workspace.id")
+        logger.info("Deleted workspace ${workspace.id}")
+    }
+
+    override fun clearWorkspace(workspace: Workspace) {
+        val workspaceRootPath = getWorkspaceRoot(workspace)
+        if(workspaceRootPath.toFile().listFiles()?.all {it.deleteRecursively() } != true)
+            throw IllegalStateException("Could not clean workspace with path $workspaceRootPath")
     }
 
     override fun getWorkspaceRoot(workspace: Workspace): Path {
