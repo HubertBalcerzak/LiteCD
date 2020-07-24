@@ -108,10 +108,16 @@
               <li th:each="instance: ${possibleInstances}" class="list-group-item d-flex justify-content-between">
                 <p th:text="${instance.key.value}"></p>
                 <div>
-                  <form th:action="|/app/${app.id}/create|" method="post">
+
+                  <span th:if="${instance.alreadyCreated}"
+                        class="badge badge-secondary">Already exists</span>
+                </div>
+                <div>
+                  <form th:if="${!instance.alreadyCreated}" th:action="|/app/${app.id}/create|" method="post">
                     <input type="hidden" th:value="${instance.key.value}" name="key"/>
                     <input type="submit" class="btn btn-primary" value="Create"/>
                   </form>
+                  <button th:if="${instance.alreadyCreated}" class="btn btn-primary" disabled="">Create</button>
                 </div>
               </li>
             </ul>

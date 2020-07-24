@@ -5,5 +5,6 @@ import java.time.LocalDateTime
 
 data class AvailableInstance(
         val key: InstanceKey,
-        val updated: LocalDateTime
+        val updated: LocalDateTime,
+        val alreadyCreated: Boolean
 )

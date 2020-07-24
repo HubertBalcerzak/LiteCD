@@ -17,11 +17,8 @@ import me.hubertus248.deployer.util.Util
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
-import java.lang.Exception
-import java.lang.IllegalStateException
 import java.nio.file.Files
 import java.nio.file.Path
-import javax.swing.Spring
 import javax.transaction.Transactional
 
 val INSTANCE_MANAGER_SPRING_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_SPRING")
@@ -72,7 +69,8 @@ class SpringInstanceManager(
     override fun getCustomApplicationInfoFragment(): String = "application/spring/springApplicationInfo.html"
 
     override fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> =
-            availableSpringInstanceService.listArtifacts(appId, pageable).map { AvailableInstance(it.key, it.lastUpdate) }
+            availableSpringInstanceService.listArtifacts(appId, pageable)
+                    .map { AvailableInstance(it.key, it.lastUpdate, it.actualInstance != null) }
 
     @Transactional
     override fun createInstance(appId: Long, instanceKey: InstanceKey): Instance {
@@ -96,6 +94,7 @@ class SpringInstanceManager(
                     instanceKey,
                     application)
             springEnvironmentService.setDefaultInstanceEnvironment(newInstance)
+            instanceTemplate.actualInstance = newInstance
             return newInstance
         } catch (e: Exception) {
             workspaceService.deleteWorkspace(newWorkspace)

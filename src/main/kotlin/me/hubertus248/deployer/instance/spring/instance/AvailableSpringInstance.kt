@@ -27,6 +27,9 @@ class AvailableSpringInstance(
         @Column
         var lastUpdate: LocalDateTime,
 
+        @OneToOne(fetch = FetchType.LAZY, optional = true)
+        var actualInstance: SpringInstance? = null,
+
         @Column
         var deleted: Boolean = false
 
