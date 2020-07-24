@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
+import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.transaction.Transactional
 
@@ -59,10 +60,11 @@ class AvailableSpringInstanceServiceImpl(
     override fun deleteArtifact(appId: Long, instanceKey: InstanceKey) {
         val availableInstance = availableSpringInstanceRepository.findFirstByApplication_IdAndKey(appId, instanceKey)
                 ?: throw BadRequestException()
+        if (availableInstance.actualInstance != null) throw IllegalStateException("Cannot delete instance template: Delete created instance first.")
 
         val fileKey = availableInstance.artifact.fileKey
-        availableInstance.deleted = true
-        availableSpringInstanceRepository.save(availableInstance)
+//        availableInstance.deleted = true
+        availableSpringInstanceRepository.delete(availableInstance)
         filesystemStorageService.deleteFile(fileKey)
 
     }

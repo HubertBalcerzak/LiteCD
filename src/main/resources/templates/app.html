@@ -73,19 +73,25 @@
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CONFIGURABLE_INSTANCES)}"
                            class="dropdown-item" href="#">Details</a>
-                        <button th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).STOPPABLE_INSTANCES)}"
-                           class="dropdown-item" th:form="|stop_instance_${instance.id}|">Stop</button>
-                        <button th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST)}"
-                           class="dropdown-item" th:form="|recreate_instance_${instance.id}|">Recreate</button>
+                        <button
+                            th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).STOPPABLE_INSTANCES)}"
+                            class="dropdown-item" th:form="|stop_instance_${instance.id}|">Stop
+                        </button>
+                        <button
+                            th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST)}"
+                            class="dropdown-item" th:form="|recreate_instance_${instance.id}|">Recreate
+                        </button>
                         <button class="dropdown-item" th:form="|delete_instance_${instance.id}|">Delete</button>
 
                         <form th:action="|/app/${app.id}/stop|" th:id="|stop_instance_${instance.id}|" method="post">
                           <input type="hidden" th:value="${instance.key.value}" name="key"/>
                         </form>
-                        <form th:action="|/app/${app.id}/delete|" th:id="|delete_instance_${instance.id}|" method="post">
+                        <form th:action="|/app/${app.id}/delete|" th:id="|delete_instance_${instance.id}|"
+                              method="post">
                           <input type="hidden" th:value="${instance.key.value}" name="key"/>
                         </form>
-                        <form th:action="|/app/${app.id}/recreate|" th:id="|recreate_instance_${instance.id}|" method="post">
+                        <form th:action="|/app/${app.id}/recreate|" th:id="|recreate_instance_${instance.id}|"
+                              method="post">
                           <input type="hidden" th:value="${instance.key.value}" name="key"/>
                         </form>
                       </div>
@@ -113,11 +119,28 @@
                         class="badge badge-secondary">Already exists</span>
                 </div>
                 <div>
-                  <form th:if="${!instance.alreadyCreated}" th:action="|/app/${app.id}/create|" method="post">
+                  <form th:action="|/app/${app.id}/create|" method="post" th:id="|create_instance_${instance.key}|">
                     <input type="hidden" th:value="${instance.key.value}" name="key"/>
-                    <input type="submit" class="btn btn-primary" value="Create"/>
                   </form>
-                  <button th:if="${instance.alreadyCreated}" class="btn btn-primary" disabled="">Create</button>
+                  <form th:action="|/app/${app.id}/deleteAvailableInstance|" method="post"
+                        th:id="|delete_available_instance_${instance.key}|">
+                    <input type="hidden" th:value="${instance.key.value}" name="key"/>
+                  </form>
+                  <div class="btn-group" role="group">
+                    <button th:if="${!instance.alreadyCreated}" class="btn btn-primary"
+                            th:form="|create_instance_${instance.key}|">Create
+                    </button>
+                    <button th:if="${instance.alreadyCreated}" class="btn btn-primary" disabled="">Create</button>
+                    <div class="btn-group" role="group">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
+                              aria-haspopup="true" aria-expanded="false">More
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <button th:if="${!instance.alreadyCreated}" class="dropdown-item" th:form="|delete_available_instance_${instance.key}|">Delete</button>
+                        <button th:if="${instance.alreadyCreated}" class="dropdown-item" disabled="">Delete</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </li>
             </ul>

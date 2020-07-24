@@ -114,4 +114,11 @@ class ApplicationController(
         instanceService.recreate(appId, InstanceKey(key))
         return RedirectView("/app/$appId")
     }
+
+    @Authenticated
+    @PostMapping("/app/{appId}/deleteAvailableInstance")
+    fun deleteAvailableInstance(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        instanceService.deleteAvailableInstance(appId, InstanceKey(key))
+        return RedirectView("/app/$appId")
+    }
 }

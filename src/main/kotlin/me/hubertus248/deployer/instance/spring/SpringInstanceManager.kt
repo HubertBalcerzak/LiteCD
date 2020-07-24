@@ -207,6 +207,11 @@ class SpringInstanceManager(
         springInstanceRepository.delete(instance)
     }
 
+    override fun deleteAvailableInstance(appId: Long, instanceKey: InstanceKey) {
+         availableSpringInstanceService.deleteArtifact(appId, instanceKey)
+
+    }
+
     override fun configureApplicationUrl(appId: Long): String = "/spring/configureApp/${appId}"
 
     override fun configureInstanceUrl(appId: Long, instanceId: Long): String = "/spring/configureInstance/$instanceId"

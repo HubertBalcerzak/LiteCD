@@ -51,6 +51,10 @@ abstract class InstanceManager {
     open fun configureApplicationUrl(appId: Long): String = throw NotImplementedError()
 
     open fun configureInstanceUrl(appId: Long, instanceId: Long): String = throw NotImplementedError()
+
+    open fun deleteAvailableInstance(appId: Long, instanceKey: InstanceKey ){
+        throw NotImplementedError()
+    }
 }
 
 //TODO refactor like FileKey

@@ -19,6 +19,8 @@ interface InstanceService {
     fun delete(appId: Long, instanceKey: InstanceKey)
 
     fun recreate(appId: Long, instanceKey: InstanceKey)
+
+    fun deleteAvailableInstance(appId: Long, instanceKey: InstanceKey)
 }
 
 @Service
@@ -74,6 +76,15 @@ class InstanceServiceImpl(
             throw BadRequestException()
 
         instanceManager.recreateInstance(appId, instanceKey)
+    }
+
+    override fun deleteAvailableInstance(appId: Long, instanceKey: InstanceKey) {
+        val instanceManager = getInstanceManager(appId)
+
+        if (!instanceManager.supportsFeature(InstanceManagerFeature.POSSIBLE_INSTANCE_LIST))
+            throw BadRequestException()
+
+        instanceManager.deleteAvailableInstance(appId, instanceKey)
     }
 
 
