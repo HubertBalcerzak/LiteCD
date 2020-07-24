@@ -36,6 +36,18 @@ abstract class InstanceManager {
         throw NotImplementedError()
     }
 
+    open fun stopInstance(appId: Long, instanceKey: InstanceKey) {
+        throw NotImplementedError()
+    }
+
+    open fun deleteInstance(appId: Long, instanceKey: InstanceKey) {
+        throw NotImplementedError()
+    }
+
+    open fun recreateInstance(appId: Long, instanceKey: InstanceKey) {
+        throw NotImplementedError()
+    }
+
     open fun configureApplicationUrl(appId: Long): String = throw NotImplementedError()
 
     open fun configureInstanceUrl(appId: Long, instanceId: Long): String = throw NotImplementedError()
@@ -54,8 +66,28 @@ data class InstanceManagerName(
 }
 
 enum class InstanceManagerFeature {
+    /**
+     * custom modal with application info
+     */
     CUSTOM_APPLICATION_INFO,
+
+    /**
+     * instances created from list of available instances
+     */
     POSSIBLE_INSTANCE_LIST,
+
+    /**
+     * instances support STOP/START commands
+     */
+    STOPPABLE_INSTANCES,
+
+    /**
+     * custom configure application page
+     */
     CONFIGURABLE_APPLICATION,
+
+    /**
+     * custom instance details/configuration page
+     */
     CONFIGURABLE_INSTANCES
 }

@@ -57,14 +57,15 @@ class SpringInstanceManager(
     }
 
     override fun listInstances(appId: Long, pageable: Pageable): List<Instance> {
-        return springInstanceRepository.findAllByApplication_Id(appId, pageable)
+        return springInstanceRepository.findAllByApplication_Id(appId, pageable).apply { this.forEach { updateInstanceStatus(it) } }
     }
 
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(
             InstanceManagerFeature.CUSTOM_APPLICATION_INFO,
             InstanceManagerFeature.POSSIBLE_INSTANCE_LIST,
             InstanceManagerFeature.CONFIGURABLE_APPLICATION,
-            InstanceManagerFeature.CONFIGURABLE_INSTANCES)
+            InstanceManagerFeature.CONFIGURABLE_INSTANCES,
+            InstanceManagerFeature.STOPPABLE_INSTANCES)
 
     override fun getOpenUrl(instance: Instance): String = "$protocol://${(instance as SpringInstance).subdomain.value}.$domain"
 

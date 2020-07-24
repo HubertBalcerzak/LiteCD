@@ -73,9 +73,45 @@ class ApplicationController(
 
     //TODO restrict to admin/user (?)
     @Authenticated
-    @PostMapping("/app/{appId}/start")
-    fun start(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+    @PostMapping("/app/{appId}/create")
+    fun create(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
         instanceService.createAndStart(appId, InstanceKey(key))
         return RedirectView("/app/$appId")
+    }
+
+    //TODO restrict to admin
+    @Authenticated
+    @PostMapping("/app/{appId}/start")
+    fun start(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        instanceService.start(appId, InstanceKey(key))
+        return RedirectView("/app/$appId")
+    }
+
+    //TODO restrict to admin
+    @Authenticated
+    @PostMapping("/app/{appId}/stop")
+    fun stop(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        instanceService.stop(appId, InstanceKey(key))
+        return RedirectView("/app/$appId")
+    }
+
+
+    //TODO restrict to admin
+    @Authenticated
+    @PostMapping("/app/{appId}/delete")
+    fun delete(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        instanceService.delete(appId, InstanceKey(key))
+        return RedirectView("/app/$appId")
+    }
+
+    /**
+     * delete and create instance again, preserve instance configuration
+     */
+//TODO restrict to admin
+    @Authenticated
+    @PostMapping("/app/{appId}/recreate")
+    fun recreate(@PathVariable appId: Long, @RequestParam key: String): RedirectView {
+        return RedirectView("/app/$appId")
+
     }
 }
