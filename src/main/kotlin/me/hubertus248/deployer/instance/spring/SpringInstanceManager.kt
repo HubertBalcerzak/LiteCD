@@ -12,10 +12,7 @@ import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstance
 import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstanceService
 import me.hubertus248.deployer.instance.spring.instance.SpringInstance
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
-import me.hubertus248.deployer.service.FilesystemStorageService
-import me.hubertus248.deployer.service.SubProcessService
-import me.hubertus248.deployer.service.WorkspaceService
-import me.hubertus248.deployer.service.ZuulService
+import me.hubertus248.deployer.service.*
 import me.hubertus248.deployer.util.Util
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Pageable
@@ -38,7 +35,9 @@ class SpringInstanceManager(
         private val workspaceService: WorkspaceService,
         private val filesystemStorageService: FilesystemStorageService,
         private val subProcessService: SubProcessService,
-        private val zuulService: ZuulService
+        private val zuulService: ZuulService,
+        private val springEnvironmentService: SpringEnvironmentService,
+        private val portProviderService: PortProviderService
 ) : InstanceManager() {
 
     @Value("\${deployer.domain}")
@@ -87,7 +86,7 @@ class SpringInstanceManager(
 
         try {
             prepareWorkspace(newWorkspace, instanceTemplate)
-            return SpringInstance(newWorkspace,
+            val newInstance = SpringInstance(newWorkspace,
                     null,
                     DomainLabel.randomLabel(),
                     null,
@@ -95,6 +94,8 @@ class SpringInstanceManager(
                     null,
                     instanceKey,
                     application)
+            springEnvironmentService.setDefaultInstanceEnvironment(newInstance)
+            return newInstance
         } catch (e: Exception) {
             workspaceService.deleteWorkspace(newWorkspace)
             throw e
@@ -106,15 +107,19 @@ class SpringInstanceManager(
         val springInstance = instance as SpringInstance
         updateInstanceStatus(springInstance)
         if (springInstance.status == InstanceStatus.RUNNING) throw IllegalStateException("Instance already running")
+
         val workspaceRootPath = workspaceService.getWorkspaceRoot(springInstance.workspace)
+        springInstance.port = portProviderService.getPort()
+
         springInstance.process = subProcessService.startProcess(
                 workspaceRootPath.toFile(),
                 Path.of(workspaceRootPath.toString(), "log.txt").toFile(),
-                listOf("java", "-jar", "app.jar")//TODO allow customization
+                listOf("java", "-jar", "app.jar"),//TODO allow customization
+                springEnvironmentService.getEnvironment(springInstance)
         )
         springInstance.zuulMappingId = zuulService.addMapping(
                 "/api/spring/${springInstance.subdomain.value}/**",
-                "http://localhost:8080"//TODO dynamic port
+                "http://localhost:${instance.port}"
         )
 
         springInstance.status = InstanceStatus.RUNNING

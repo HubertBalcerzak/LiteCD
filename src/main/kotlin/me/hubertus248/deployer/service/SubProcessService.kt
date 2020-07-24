@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct
 import javax.transaction.Transactional
 
 interface SubProcessService {
-    fun startProcess(workingDirectory: File, logFile: File, command: List<String>): SubProcess
+    fun startProcess(workingDirectory: File, logFile: File, command: List<String>, environmentAdditions: Map<String, String>): SubProcess
 
     fun stopProcess(process: SubProcess)
 
@@ -35,7 +35,7 @@ class SubProcessServiceImpl(
     }
 
     @Transactional
-    override fun startProcess(workingDirectory: File, logFile: File, command: List<String>): SubProcess {
+    override fun startProcess(workingDirectory: File, logFile: File, command: List<String>, environmentAdditions: Map<String, String>): SubProcess {
         if (!workingDirectory.exists() || !workingDirectory.isDirectory)
             throw IllegalArgumentException("Incorrect working directory ${workingDirectory.path}")
 
@@ -45,12 +45,15 @@ class SubProcessServiceImpl(
         subProcessRepository.save(processId)
         logger.info("Starting new subprocess with id ${processId.processId}")
         val newProcessBuilder = ProcessBuilder()
-        cleanEnv(newProcessBuilder.environment())
+
+        val environment = newProcessBuilder.environment()
+        cleanEnv(environment)
+        environment.putAll(environmentAdditions)
+
         val newProcess = newProcessBuilder
                 .directory(workingDirectory)
                 .command(command)
                 .redirectErrorStream(true)
-//                .environment()//TODO
                 .redirectOutput(logFile)
                 .start()
         processes[processId.processId] = newProcess
