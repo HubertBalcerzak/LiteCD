@@ -13,4 +13,5 @@ interface AvailableSpringInstanceRepository : JpaRepository<AvailableSpringInsta
     fun findFirstByApplication_IdAndKey(applicationId: Long, instanceKey: InstanceKey): AvailableSpringInstance?
     fun findAllByApplication_Id(applicationId: Long, pageable: Pageable): List<AvailableSpringInstance>
     fun findAllByApplication(application: SpringApplication, pageable: Pageable): List<AvailableSpringInstance>
+    fun findAllByApplication(application: SpringApplication): List<AvailableSpringInstance>
 }

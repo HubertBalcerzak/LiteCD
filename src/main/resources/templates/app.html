@@ -18,23 +18,27 @@
     <div class="container">
       <div class="row pb-3">
         <h3 class="col" th:text="${app.name.value}"></h3>
-        <div class="btn-group float-right" role="group">
-          <button sec:authorize="isAuthenticated()"
-                  th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
-                  type="button"
-                  class="btn btn-primary"
-                  data-toggle="modal"
-                  data-target="#customApplicationInfo">
+        <div sec:authorize="isAuthenticated()" class="btn-group float-right" role="group">
+          <button
+              th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
+              type="button"
+              class="btn btn-primary"
+              data-toggle="modal"
+              data-target="#customApplicationInfo">
             <!--        TODO restrict to admin-->
             Details
           </button>
-          <a sec:authorize="isAuthenticated()"
-             th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CONFIGURABLE_APPLICATION)}"
+          <a th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CONFIGURABLE_APPLICATION)}"
              type="button"
              class="btn btn-primary"
              th:href="${instanceManager.configureApplicationUrl(app.id)}">
             Configure
           </a>
+          <button type="button"
+                  class="btn btn-danger"
+                  data-toggle="modal"
+                  data-target="#deleteApplicationModal">Delete
+          </button>
         </div>
       </div>
 
@@ -136,7 +140,9 @@
                               aria-haspopup="true" aria-expanded="false">More
                       </button>
                       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <button th:if="${!instance.alreadyCreated}" class="dropdown-item" th:form="|delete_available_instance_${instance.key}|">Delete</button>
+                        <button th:if="${!instance.alreadyCreated}" class="dropdown-item"
+                                th:form="|delete_available_instance_${instance.key}|">Delete
+                        </button>
                         <button th:if="${instance.alreadyCreated}" class="dropdown-item" disabled="">Delete</button>
                       </div>
                     </div>
@@ -144,6 +150,28 @@
                 </div>
               </li>
             </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    TODO restrict to admin-->
+    <div sec:authorize="isAuthenticated()" class="modal fade" tabindex="-1" role="dialog" id="deleteApplicationModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" th:text="|Delete application ${app.name.value}|"></h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Are you sure?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <form th:action="|/app/${app.id}/deleteApp|" method="post" id="deleteAppForm">
+              <input type="submit" class="btn btn-danger" form="deleteAppForm" value="Delete"/>
+            </form>
           </div>
         </div>
       </div>

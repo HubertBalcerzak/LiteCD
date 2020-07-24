@@ -23,6 +23,8 @@ abstract class InstanceManager {
 
     abstract fun getOpenUrl(instance: Instance): String
 
+    abstract fun prepareForDeletion(appId: Long)
+
     //TODO redesign application specific features
     fun supportsFeature(feature: InstanceManagerFeature): Boolean = getAvailableFeatures().contains(feature)
 

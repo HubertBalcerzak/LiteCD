@@ -46,6 +46,14 @@ class ApplicationController(
 
     //TODO restrict to admin
     @Authenticated
+    @PostMapping("/app/{appId}/deleteApp")
+    fun deleteApp(@PathVariable appId: Long): RedirectView {
+        applicationService.deleteApplication(appId)
+        return RedirectView("/apps")
+    }
+
+    //TODO restrict to admin
+    @Authenticated
     @PostMapping("/newApp")
     fun newAppPost(@ModelAttribute @Validated createApplicationDTO: CreateApplicationDTO): RedirectView {
         applicationService.createApplication(ApplicationName(createApplicationDTO.name),

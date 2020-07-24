@@ -28,6 +28,8 @@ interface SpringEnvironmentService {
     fun getEnvironment(instance: SpringInstance): Map<String, String>
 
     fun deleteInstanceEnvironment(instance: SpringInstance)
+
+    fun deleteDefaultEnvironment(application: SpringApplication)
 }
 
 @Service
@@ -83,6 +85,12 @@ class SpringEnvironmentServiceImpl(
     override fun deleteInstanceEnvironment(instance: SpringInstance) {
         instance.environment.forEach { environmentVariableRepository.delete(it) }
         instance.environment.clear()
+    }
+
+    @Transactional
+    override fun deleteDefaultEnvironment(application: SpringApplication) {
+        application.defaultEnvironment.forEach { environmentVariableRepository.delete(it) }
+        application.defaultEnvironment.clear()
     }
 
     private fun replaceKeywords(input: String, instance: SpringInstance): String {

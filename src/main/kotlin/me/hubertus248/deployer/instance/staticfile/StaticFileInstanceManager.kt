@@ -108,6 +108,10 @@ class StaticFileInstanceManagerImpl(
 
     override fun getOpenUrl(instance: Instance): String = "/open/staticfile/${instance.id}"
 
+    override fun prepareForDeletion(appId: Long) {
+        staticFileInstanceRepository.findAllByApplication_Id(appId).forEach { deleteInstance(it) }
+    }
+
     override fun getCustomApplicationInfoFragment(): String = "application/staticfile/staticFileApplicationInfo.html"
 
     override fun deleteInstance(appId: Long, instanceKey: InstanceKey) {
@@ -115,6 +119,10 @@ class StaticFileInstanceManagerImpl(
         val instance = staticFileInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
                 ?: throw NotFoundException()
 
+        deleteInstance(instance)
+    }
+
+    private fun deleteInstance(instance: StaticFileInstance) {
         filesystemStorageService.deleteFile(instance.fileMetadata.fileKey)
         staticFileInstanceRepository.delete(instance)
     }

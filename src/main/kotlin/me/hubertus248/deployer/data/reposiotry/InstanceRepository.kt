@@ -15,4 +15,6 @@ interface InstanceRepository<T: Instance>: JpaRepository<T, Long> {
 
     fun findAllByApplication_Id(appId: Long, pageable: Pageable): List<T>
 
+    fun findAllByApplication_Id(appId: Long): List<T>
+
 }

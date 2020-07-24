@@ -20,6 +20,8 @@ interface AvailableSpringInstanceService {
 
     fun deleteArtifact(appId: Long, instanceKey: InstanceKey)
 
+    fun deleteAllArtifacts(application: SpringApplication)
+
     fun listArtifacts(appId: Long, pageable: Pageable): List<AvailableSpringInstance>
 
     fun findArtifact(springApplication: SpringApplication, instanceKey: InstanceKey): AvailableSpringInstance?
@@ -62,11 +64,12 @@ class AvailableSpringInstanceServiceImpl(
                 ?: throw BadRequestException()
         if (availableInstance.actualInstance != null) throw IllegalStateException("Cannot delete instance template: Delete created instance first.")
 
-        val fileKey = availableInstance.artifact.fileKey
-//        availableInstance.deleted = true
-        availableSpringInstanceRepository.delete(availableInstance)
-        filesystemStorageService.deleteFile(fileKey)
+        deleteArtifact(availableInstance)
 
+    }
+
+    override fun deleteAllArtifacts(application: SpringApplication) {
+        availableSpringInstanceRepository.findAllByApplication(application).forEach { deleteArtifact(it) }
     }
 
     override fun listArtifacts(appId: Long, pageable: Pageable): List<AvailableSpringInstance> {
@@ -75,6 +78,13 @@ class AvailableSpringInstanceServiceImpl(
 
     override fun findArtifact(springApplication: SpringApplication, instanceKey: InstanceKey): AvailableSpringInstance? {
         return availableSpringInstanceRepository.findFirstByApplicationAndKey(springApplication, instanceKey)
+    }
+
+    private fun deleteArtifact(availableInstance: AvailableSpringInstance) {
+        val fileKey = availableInstance.artifact.fileKey
+//        availableInstance.deleted = true
+        availableSpringInstanceRepository.delete(availableInstance)
+        filesystemStorageService.deleteFile(fileKey)
     }
 
 }

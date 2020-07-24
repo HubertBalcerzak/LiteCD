@@ -67,6 +67,13 @@ class SpringInstanceManager(
 
     override fun getOpenUrl(instance: Instance): String = "$protocol://${(instance as SpringInstance).subdomain.value}.$domain"
 
+    override fun prepareForDeletion(appId: Long) {
+        val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
+        springInstanceRepository.findAllByApplication_Id(appId).forEach { deleteInstance(it, application) }
+        availableSpringInstanceService.deleteAllArtifacts(application)
+        springEnvironmentService.deleteDefaultEnvironment(application)
+    }
+
     override fun getCustomApplicationInfoFragment(): String = "application/spring/springApplicationInfo.html"
 
     override fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> =
@@ -208,8 +215,7 @@ class SpringInstanceManager(
     }
 
     override fun deleteAvailableInstance(appId: Long, instanceKey: InstanceKey) {
-         availableSpringInstanceService.deleteArtifact(appId, instanceKey)
-
+        availableSpringInstanceService.deleteArtifact(appId, instanceKey)
     }
 
     override fun configureApplicationUrl(appId: Long): String = "/spring/configureApp/${appId}"
