@@ -40,7 +40,7 @@
               <div class="row mb-3">
                 <div class="col flex justify-content-end">
                   <button class="btn btn-secondary mr-3" onclick="addRow()">New</button>
-                  <button class="btn btn-primary" onclick="saveDefaultEnvironment(1)">Save</button>
+                  <button class="btn btn-primary" th:onclick="|saveDefaultEnvironment(${app.id})|">Save</button>
                 </div>
               </div>
             </div>
