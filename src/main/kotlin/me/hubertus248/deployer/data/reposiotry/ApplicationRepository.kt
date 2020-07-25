@@ -1,6 +1,7 @@
 package me.hubertus248.deployer.data.reposiotry
 
 import me.hubertus248.deployer.data.entity.Application
+import me.hubertus248.deployer.data.entity.ApplicationName
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
@@ -19,4 +20,6 @@ interface ApplicationRepository : JpaRepository<Application, Long> {
         from Application a where a.id=?1 and a.visibility=me.hubertus248.deployer.data.entity.Visibility.PUBLIC
     """)
     fun findFirstPublicById(id: Long): Application?
+
+    fun findFirstByName(name: ApplicationName): Application?
 }

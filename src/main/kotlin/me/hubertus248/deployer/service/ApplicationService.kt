@@ -35,7 +35,9 @@ class ApplicationServiceImpl(
 
     @Transactional
     override fun createApplication(name: ApplicationName, visibility: Visibility, managerName: InstanceManagerName): Long {
-        //TODO check name not unique
+        val oldApp = applicationRepository.findFirstByName(name)
+        if (oldApp != null) throw BadRequestException()
+
         val instanceManager = instanceManagerService.getManagerForName(managerName) ?: throw BadRequestException()
         val newApplication = instanceManager.registerApplication(name, visibility)
         logger.info("Created new application '${name.value}' of type '${instanceManager.getFriendlyName()}'")
