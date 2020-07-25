@@ -32,4 +32,10 @@ class SpringAppRestController(
     fun updateDefaultEnvironment(@PathVariable appId: Long, @RequestBody environment: EnvironmentDTO) {
         springEnvironmentService.updateApplicationEnvironment(appId, environment)
     }
+
+    @IsAdmin
+    @PostMapping("/spring/saveInstanceEnv/{instanceId}")
+    fun updateInstanceEnvironment(@PathVariable instanceId: Long, @RequestBody environment: EnvironmentDTO) {
+        springEnvironmentService.updateInstanceEnvironment(instanceId, environment)
+    }
 }

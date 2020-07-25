@@ -42,6 +42,7 @@ class SpringAppConfigurationController(
         model.addAttribute("app", instance.application as SpringApplication)
         model.addAttribute("instanceManager", springInstanceManager)
         model.addAttribute("domain", domain)
+        model.addAttribute("env", springEnvironmentService.getRawEnvironment(instance))
         return "application/spring/springInstancePage"
     }
 

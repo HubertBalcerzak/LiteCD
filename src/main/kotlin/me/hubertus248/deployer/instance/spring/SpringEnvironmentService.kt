@@ -27,6 +27,8 @@ interface SpringEnvironmentService {
 
     fun getEnvironment(instance: SpringInstance): Map<String, String>
 
+    fun getRawEnvironment(instance: SpringInstance): Map<String, String>
+
     fun deleteInstanceEnvironment(instance: SpringInstance)
 
     fun deleteDefaultEnvironment(application: SpringApplication)
@@ -54,8 +56,20 @@ class SpringEnvironmentServiceImpl(
         springApplicationRepository.save(application)
     }
 
+    @Transactional
     override fun updateInstanceEnvironment(instanceId: Long, environment: EnvironmentDTO) {
-        TODO("Not yet implemented")
+        val instance = springInstanceRepository.findFirstById(instanceId)
+                ?: throw NotFoundException()
+
+        instance.environment.forEach { environmentVariableRepository.delete(it) }
+        instance.environment.clear()
+
+        environment.variables.map { EnvironmentVariable(0, EnvironmentVariableName(it.name), EnvironmentVariableValue(it.value)) }
+                .forEach {
+                    environmentVariableRepository.save(it)
+                    instance.environment.add(it)
+                }
+        springInstanceRepository.save(instance)
     }
 
     @Transactional
@@ -79,6 +93,10 @@ class SpringEnvironmentServiceImpl(
 
     override fun getEnvironment(instance: SpringInstance): Map<String, String> {
         return mapOf(*instance.environment.map { Pair(it.name.value, replaceKeywords(it.value.value, instance)) }.toTypedArray())
+    }
+
+    override fun getRawEnvironment(instance: SpringInstance): Map<String, String> {
+        return mapOf(*instance.environment.map { Pair(it.name.value, it.value.value) }.toTypedArray())
     }
 
     @Transactional
