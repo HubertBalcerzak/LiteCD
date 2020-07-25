@@ -10,6 +10,7 @@ data class DomainLabel(
         val value: String
 ) {
     init {
+        require(value.length < 128)
         require(value.isNotBlank())
         require(value.all { it.isLetterOrDigit() && if (it.isLetter()) it.isLowerCase() else true })
     }

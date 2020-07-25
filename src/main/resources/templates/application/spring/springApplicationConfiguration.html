@@ -19,14 +19,11 @@
     <div class="row">
       <div class="col">
         <div class="card">
+          <div class="card-header">
+            <h4>Default Environment</h4>
+          </div>
           <div class="card-body">
             <div class="container">
-              <div class="row mb-3">
-                <div class="col">
-
-                  <h4>Default Environment</h4>
-                </div>
-              </div>
               <div id="env">
                 <div class="row" th:each="variable: ${env.entrySet()}">
                   <div class="col">
@@ -41,13 +38,9 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <div class="col">
-                  <button class="btn btn-secondary float-right" onclick="addRow()">New</button>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col">
-                  <button class="btn btn-primary float-right" onclick="saveDefaultEnvironment(1)">Save</button>
+                <div class="col flex justify-content-end">
+                  <button class="btn btn-secondary mr-3" onclick="addRow()">New</button>
+                  <button class="btn btn-primary" onclick="saveDefaultEnvironment(1)">Save</button>
                 </div>
               </div>
             </div>

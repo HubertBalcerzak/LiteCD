@@ -15,8 +15,10 @@ import me.hubertus248.deployer.instance.spring.instance.SpringInstance
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.service.*
 import me.hubertus248.deployer.util.Util
+import org.hibernate.annotations.NotFound
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Pageable
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Component
 import java.nio.file.Files
 import java.nio.file.Path
@@ -221,4 +223,10 @@ class SpringInstanceManager(
     override fun configureApplicationUrl(appId: Long): String = "/spring/configureApp/${appId}"
 
     override fun configureInstanceUrl(appId: Long, instanceId: Long): String = "/spring/configureInstance/$instanceId"
+
+    fun updateSubdomain(instanceId: Long, newDomainLabel: DomainLabel) {
+        val instance = springInstanceRepository.findFirstById(instanceId) ?: throw NotFoundException()
+        instance.subdomain = newDomainLabel
+        springInstanceRepository.save(instance)
+    }
 }

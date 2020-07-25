@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/base.html :: base (~{::title}, ~{::section})}" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+  <title>Deployer</title>
+</head>
+<body>
+
+
+<section>
+  <div th:replace="fragments/navbar :: navbar"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h3 th:text="${app.name.value}"></h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col d-flex justify-content-start">
+        <h4 th:text="|Instance ${instance.key.value}|"></h4>
+        <div>
+          <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).RUNNING}"
+                class="badge badge-success">Running</span>
+          <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).STOPPED}"
+                class="badge badge-danger">Stopped</span>
+        </div>
+      </div>
+      <div class="col">
+        <div th:insert="/fragments/instanceControls :: instanceControls" class="float-right">
+
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h4>Logs</h4>
+          </div>
+          <div class="card-body">
+            <div class="container">
+              <div class="row">
+                <div class="col">
+                  <!--                  TODO-->
+                </div>
+              </div>
+              <div class="row justify-content-end">
+                <button class="btn btn-secondary mr-3">Download logs</button>
+                <button class="btn btn-secondary">Download workspace</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h4>Subdomain</h4>
+          </div>
+          <div class="card-body">
+            <div class="container">
+              <form method="post" th:action="|/spring/configureSubdomain/${instance.id}|">
+                <div class="row">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="subdomain" name="subdomain"
+                           th:value="${instance.subdomain.value}"/>
+                    <div class="input-group-append">
+                      <span class="input-group-text" th:text="|.${domain}|"></span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row justify-content-end mt-4">
+                  <input type="submit" class="btn btn-primary" value="Save">
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h4>Environment</h4>
+          </div>
+          <div class="card-body">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+</body>
+</html>

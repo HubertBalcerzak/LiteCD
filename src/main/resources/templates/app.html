@@ -59,47 +59,7 @@
                   <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).STOPPED}"
                         class="badge badge-danger">Stopped</span>
                 </div>
-                <div>
-                  <div class="btn-group" role="group">
-                    <a th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).RUNNING}"
-                       class="btn btn-primary" th:href="${instanceManager.getOpenUrl(instance)}">Open</a>
-                    <form th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).STOPPED}"
-                          th:action="|/app/${app.id}/start|"
-                          method="post">
-                      <input type="hidden" th:value="${instance.key.value}" name="key"/>
-                      <input sec:authorize="hasRole('deployer_admin')" type="submit" class="btn btn-success" value="Start"/>
-                    </form>
-                    <div sec:authorize="hasRole('deployer_admin')" class="btn-group" role="group">
-                      <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
-                              aria-haspopup="true" aria-expanded="false">More
-                      </button>
-                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CONFIGURABLE_INSTANCES)}"
-                           class="dropdown-item" href="#">Details</a>
-                        <button
-                            th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).STOPPABLE_INSTANCES)}"
-                            class="dropdown-item" th:form="|stop_instance_${instance.id}|">Stop
-                        </button>
-                        <button
-                            th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST)}"
-                            class="dropdown-item" th:form="|recreate_instance_${instance.id}|">Recreate
-                        </button>
-                        <button class="dropdown-item" th:form="|delete_instance_${instance.id}|">Delete</button>
-
-                        <form th:action="|/app/${app.id}/stop|" th:id="|stop_instance_${instance.id}|" method="post">
-                          <input type="hidden" th:value="${instance.key.value}" name="key"/>
-                        </form>
-                        <form th:action="|/app/${app.id}/delete|" th:id="|delete_instance_${instance.id}|"
-                              method="post">
-                          <input type="hidden" th:value="${instance.key.value}" name="key"/>
-                        </form>
-                        <form th:action="|/app/${app.id}/recreate|" th:id="|recreate_instance_${instance.id}|"
-                              method="post">
-                          <input type="hidden" th:value="${instance.key.value}" name="key"/>
-                        </form>
-                      </div>
-                    </div>
-                  </div>
+                <div th:insert="fragments/instanceControls :: instanceControls">
                 </div>
               </li>
             </ul>

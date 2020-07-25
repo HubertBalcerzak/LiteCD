@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface SpringInstanceRepository : InstanceRepository<SpringInstance> {
-
+    fun findFirstById(id: Long): SpringInstance?
 }
