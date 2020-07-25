@@ -9,7 +9,7 @@
 
 <section>
   <div th:replace="fragments/navbar :: navbar"></div>
-  <div sec:authorize="isAuthenticated()"
+  <div sec:authorize="hasRole('deployer_admin')"
        th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}">
     <div th:replace="${instanceManager.getCustomApplicationInfoFragment()}::customApplicationInfo"></div>
   </div>
@@ -18,7 +18,7 @@
     <div class="container">
       <div class="row pb-3">
         <h3 class="col" th:text="${app.name.value}"></h3>
-        <div sec:authorize="isAuthenticated()" class="btn-group float-right" role="group">
+        <div sec:authorize="hasRole('deployer_admin')" class="btn-group float-right" role="group">
           <button
               th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
               type="button"
@@ -52,8 +52,8 @@
           <div class="row">
             <p th:if="${instances.isEmpty()}">There are no running instances</p>
             <ul class="list-group col">
-              <li th:each="instance: ${instances}" class="list-group-item d-flex justify-content-between">
-                <p th:text="${instance.key.value}"></p>
+              <li th:each="instance: ${instances}" class="list-group-item d-flex justify-content-between align-items-center">
+                <p class="no-margin" th:text="${instance.key.value}"></p>
                 <div>
                   <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).RUNNING}"
                         class="badge badge-success">Running</span>
@@ -68,9 +68,9 @@
                           th:action="|/app/${app.id}/start|"
                           method="post">
                       <input type="hidden" th:value="${instance.key.value}" name="key"/>
-                      <input type="submit" class="btn btn-success" value="Start"/>
+                      <input sec:authorize="hasRole('deployer_admin')" type="submit" class="btn btn-success" value="Start"/>
                     </form>
-                    <div class="btn-group" role="group">
+                    <div sec:authorize="hasRole('deployer_admin')" class="btn-group" role="group">
                       <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown"
                               aria-haspopup="true" aria-expanded="false">More
                       </button>
@@ -108,6 +108,7 @@
           </div>
         </div>
         <div class="col"
+             sec:authorize="isAuthenticated()"
              th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST)}">
           <div class="row">
             <h5 class="col">Create Instance:</h5>
@@ -115,14 +116,14 @@
           <div class="row">
             <p th:if="${possibleInstances.isEmpty()}">There are no available templates</p>
             <ul class="list-group col">
-              <li th:each="instance: ${possibleInstances}" class="list-group-item d-flex justify-content-between">
-                <p th:text="${instance.key.value}"></p>
+              <li th:each="instance: ${possibleInstances}" class="list-group-item d-flex justify-content-between align-items-center">
+                <p class="no-margin" th:text="${instance.key.value}"></p>
                 <div>
 
                   <span th:if="${instance.alreadyCreated}"
                         class="badge badge-secondary">Already exists</span>
                 </div>
-                <div>
+                <div sec:authorize="hasRole('deployer_admin')">
                   <form th:action="|/app/${app.id}/create|" method="post" th:id="|create_instance_${instance.key}|">
                     <input type="hidden" th:value="${instance.key.value}" name="key"/>
                   </form>
@@ -155,7 +156,7 @@
       </div>
     </div>
     <!--    TODO restrict to admin-->
-    <div sec:authorize="isAuthenticated()" class="modal fade" tabindex="-1" role="dialog" id="deleteApplicationModal">
+    <div sec:authorize="hasRole('deployer_admin')" class="modal fade" tabindex="-1" role="dialog" id="deleteApplicationModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

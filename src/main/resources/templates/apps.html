@@ -16,7 +16,7 @@
         <h4 class="col">Applications</h4>
         <div class="col">
           <!--          TODO introduce admin role-->
-          <a sec:authorize="isAuthenticated()" class="btn btn-primary float-right" href="/newApp">Create App</a>
+          <a sec:authorize="hasRole('deployer_admin')" class="btn btn-primary float-right" href="/newApp">Create App</a>
         </div>
       </div>
       <!--TODO add pagination-->

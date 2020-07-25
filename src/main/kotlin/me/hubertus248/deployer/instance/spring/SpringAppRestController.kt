@@ -5,8 +5,7 @@ import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstanceService
-import me.hubertus248.deployer.security.Authenticated
-import org.springframework.stereotype.Controller
+import me.hubertus248.deployer.security.IsAdmin
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
@@ -28,21 +27,9 @@ class SpringAppRestController(
         availableSpringInstanceService.addArtifact(app, actualSecret, file, InstanceKey(key))
     }
 
-    @Authenticated
+    @IsAdmin
     @PostMapping("/spring/saveApplicationEnv/{appId}")
     fun updateDefaultEnvironment(@PathVariable appId: Long, @RequestBody environment: EnvironmentDTO) {
         springEnvironmentService.updateApplicationEnvironment(appId, environment)
-    }
-
-    @Authenticated
-    @PostMapping("/spring/saveInstanceEnv/{instanceId}")
-    fun updateInstanceEnvironment() {
-        TODO()
-    }
-
-    @Authenticated
-    @PostMapping("/spring/saveInstanceSubdomain/{instanceId}")
-    fun updateInstanceSubdomain() {
-        TODO()
     }
 }
