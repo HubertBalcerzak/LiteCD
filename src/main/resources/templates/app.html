@@ -25,7 +25,6 @@
               class="btn btn-primary"
               data-toggle="modal"
               data-target="#customApplicationInfo">
-            <!--        TODO restrict to admin-->
             Details
           </button>
           <a th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CONFIGURABLE_APPLICATION)}"
@@ -155,7 +154,6 @@
         </div>
       </div>
     </div>
-    <!--    TODO restrict to admin-->
     <div sec:authorize="hasRole('deployer_admin')" class="modal fade" tabindex="-1" role="dialog" id="deleteApplicationModal">
       <div class="modal-dialog">
         <div class="modal-content">

@@ -27,6 +27,7 @@ class StaticFileController(
     @GetMapping("/open/staticfile/{instanceId}")
     fun openInstance(@PathVariable instanceId: Long, authentication: Authentication, httpServletResponse: HttpServletResponse) {
 //TODO require authentication for restricted apps
+
         staticFileInstanceManager.openInstance(instanceId, httpServletResponse)
     }
 }

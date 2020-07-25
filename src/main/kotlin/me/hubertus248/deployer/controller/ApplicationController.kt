@@ -57,7 +57,7 @@ class ApplicationController(
         applicationService.createApplication(ApplicationName(createApplicationDTO.name),
                 createApplicationDTO.visibility,
                 createApplicationDTO.manager)
-        return RedirectView("apps")//TODO redirect to app page
+        return RedirectView("apps")
     }
 
     @GetMapping("/app/{appId}")
