@@ -1,1 +1,1 @@
-rootProject.name = "deployer"
+rootProject.name = "litecd"
