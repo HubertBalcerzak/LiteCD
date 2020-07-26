@@ -8,11 +8,19 @@ import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.security.IsAdmin
 import me.hubertus248.deployer.service.InstanceManagerService
 import me.hubertus248.deployer.service.LogService
+import org.apache.commons.io.IOExceptionWithCause
+import org.apache.commons.io.IOUtils
+import org.bouncycastle.asn1.iana.IANAObjectIdentifiers
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.http.ContentDisposition
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.view.RedirectView
+import java.io.IOException
+import java.nio.charset.Charset
+import javax.servlet.http.HttpServletResponse
 
 @Controller
 @RequestMapping("/spring")
@@ -26,6 +34,8 @@ class SpringAppConfigurationController(
 
     @Value("\${deployer.domain}")
     private val domain: String = ""
+
+    private val logger = LoggerFactory.getLogger(this.javaClass)
 
     @IsAdmin
     @GetMapping("/configureApp/{appId}")
@@ -54,5 +64,31 @@ class SpringAppConfigurationController(
     fun updateInstanceSubdomain(@PathVariable instanceId: Long, @RequestParam subdomain: String): RedirectView {
         springInstanceManager.updateSubdomain(instanceId, DomainLabel(subdomain))
         return RedirectView("/spring/configureInstance/$instanceId")
+    }
+
+    @IsAdmin
+    @GetMapping("/logfile/{instanceId}")
+    fun getLogFile(@PathVariable instanceId: Long, response: HttpServletResponse) {
+        val instance = springInstanceRepository.findFirstById(instanceId) ?: throw NotFoundException()
+        val logFile = logService.getLogFile(instance.workspace)
+
+        response.contentType = "text/plain"
+        response.addHeader("Content-Disposition",
+                ContentDisposition.builder("attachment")
+                        .filename("log.txt", Charset.forName("UTF-8")) //TODO add date
+                        .build()
+                        .toString())
+        if (logFile != null) {
+
+            val stream = logFile.inputStream()
+            try {
+                IOUtils.copyLarge(stream, response.outputStream)
+            } catch (e: IOException) {
+                logger.debug(e.toString())
+            } finally {
+                stream.close()
+                response.outputStream.flush()
+            }
+        }
     }
 }

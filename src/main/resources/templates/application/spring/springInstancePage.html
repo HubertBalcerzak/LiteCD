@@ -45,15 +45,16 @@
                   <div class="card text-white bg-dark">
                     <div class="card-body code-card">
                       <pre class="code">
-                        <span class="tr" th:each="line: ${logs}"><span class="th"></span><code class="code-line" th:text="${line}"></code></span>
+                        <span class="tr" th:each="line: ${logs}"><span class="th"></span><code class="code-line"
+                                                                                               th:text="${line}"></code></span>
                       </pre>
                     </div>
                   </div>
                 </div>
               </div>
               <div class="row mt-3 justify-content-end">
-                <button class="btn btn-secondary mr-3">Download logs</button>
-                <button class="btn btn-secondary" disabled="">Download workspace</button>
+                <a class="btn btn-secondary" th:href="|/spring/logfile/${instance.id}|">Download logs</a>
+                <!--                <button class="btn btn-secondary" disabled="">Download workspace</button>-->
               </div>
             </div>
           </div>
