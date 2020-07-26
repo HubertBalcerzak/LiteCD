@@ -7,6 +7,7 @@ import me.hubertus248.deployer.instance.spring.application.SpringApplicationRepo
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.security.IsAdmin
 import me.hubertus248.deployer.service.InstanceManagerService
+import me.hubertus248.deployer.service.LogService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -19,7 +20,8 @@ class SpringAppConfigurationController(
         private val springApplicationRepository: SpringApplicationRepository,
         private val springEnvironmentService: SpringEnvironmentService,
         private val springInstanceRepository: SpringInstanceRepository,
-        private val springInstanceManager: SpringInstanceManager
+        private val springInstanceManager: SpringInstanceManager,
+        private val logService: LogService
 ) {
 
     @Value("\${deployer.domain}")
@@ -43,6 +45,7 @@ class SpringAppConfigurationController(
         model.addAttribute("instanceManager", springInstanceManager)
         model.addAttribute("domain", domain)
         model.addAttribute("env", springEnvironmentService.getRawEnvironment(instance))
+        model.addAttribute("logs", logService.getRecentLogs(instance.workspace))
         return "application/spring/springInstancePage"
     }
 

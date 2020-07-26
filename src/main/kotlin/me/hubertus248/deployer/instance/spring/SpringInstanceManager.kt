@@ -123,7 +123,7 @@ class SpringInstanceManager(
 
         springInstance.process = subProcessService.startProcess(
                 workspaceRootPath.toFile(),
-                Path.of(workspaceRootPath.toString(), "log.txt").toFile(),
+                Path.of(workspaceRootPath.toString(), LOG_FILE_NAME).toFile(),
                 listOf("java", "-jar", "app.jar"),//TODO allow customization
                 springEnvironmentService.getEnvironment(springInstance)
         )

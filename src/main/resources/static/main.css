@@ -18,3 +18,54 @@
 .no-margin {
     margin-bottom: 0;
 }
+
+.text-white code {
+    color: #fff !important;
+}
+
+/*inspired by https://stackoverflow.com/a/41354764*/
+
+.text-white.th {
+    color: #fff !important;
+}
+
+pre.code {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+    white-space: pre-wrap;
+}
+pre.code::before {
+    counter-reset: linenum;
+}
+pre.code span.tr {
+    display: table-row;
+    counter-increment: linenum;
+}
+pre.code span.th {
+    display: table-cell;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+pre.code span.th::before {
+    content: counter(linenum);
+    text-align: right;
+    display: block;
+}
+pre.code span.th {
+    width: 4em;
+    color: #828282;
+}
+pre.code code {
+    display: table-cell;
+}
+
+.code-line {
+    padding-left: 1em;
+}
+
+.code-card {
+    overflow-y: scroll;
+    max-height: 80vh;
+}

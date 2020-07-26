@@ -42,12 +42,18 @@
             <div class="container">
               <div class="row">
                 <div class="col">
-                  <!--                  TODO-->
+                  <div class="card text-white bg-dark">
+                    <div class="card-body code-card">
+                      <pre class="code">
+                        <span class="tr" th:each="line: ${logs}"><span class="th"></span><code class="code-line" th:text="${line}"></code></span>
+                      </pre>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="row justify-content-end">
+              <div class="row mt-3 justify-content-end">
                 <button class="btn btn-secondary mr-3">Download logs</button>
-                <button class="btn btn-secondary">Download workspace</button>
+                <button class="btn btn-secondary" disabled="">Download workspace</button>
               </div>
             </div>
           </div>
@@ -73,7 +79,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="row justify-content-end mt-4">
+                <div class="row justify-content-end mt-3">
                   <input type="submit" class="btn btn-primary" value="Save">
                 </div>
               </form>
@@ -95,8 +101,10 @@
                 <div class="row" th:each="variable: ${env.entrySet()}">
                   <div class="col">
                     <div class="input-group mb-3 envVariable">
-                      <input type="text" class="form-control" placeholder="Variable name" name="envVariableName" th:value="${variable.key}">
-                      <input type="text" class="form-control" placeholder="Variable value" name="envVariableValue" th:value="${variable.value}">
+                      <input type="text" class="form-control" placeholder="Variable name" name="envVariableName"
+                             th:value="${variable.key}">
+                      <input type="text" class="form-control" placeholder="Variable value" name="envVariableValue"
+                             th:value="${variable.value}">
                       <div class="input-group-append">
                         <button class="btn btn-outline-danger" onclick="deleteButtonHandler(this)">Delete</button>
                       </div>
