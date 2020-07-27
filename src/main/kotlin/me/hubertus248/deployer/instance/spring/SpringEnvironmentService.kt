@@ -113,6 +113,7 @@ class SpringEnvironmentServiceImpl(
 
     private fun replaceKeywords(input: String, instance: SpringInstance): String {
         return input.replace("\$PORT\$", instance.port?.value.toString())
+                .replace("\$SUBDOMAIN\$", instance.subdomain.value)
     }
 
 }
