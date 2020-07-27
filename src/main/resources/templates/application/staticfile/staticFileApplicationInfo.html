@@ -16,8 +16,8 @@
             <code th:utext="|curl 'https://${domain}/api/pub/staticfile/create' -i -X POST \</br>
         -H 'Content-Type: multipart/form-data' \</br>
         -H 'secret: ******************' \</br>
-        -d 'app=${app.id}' \</br>
-        -d 'key=instanceKey' \</br>
+        -F 'app=${app.id}' \</br>
+        -F 'key=instanceKey' \</br>
         -F 'file=@exampleTextFile.txt;type=text/plain'|">
             </code>
           </div>

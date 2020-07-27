@@ -119,7 +119,8 @@ class SpringInstanceManager(
         if (springInstance.status == InstanceStatus.RUNNING) throw IllegalStateException("Instance already running")
 
         val workspaceRootPath = workspaceService.getWorkspaceRoot(springInstance.workspace)
-        springInstance.port = portProviderService.getPort()
+        val port = portProviderService.getPort()
+        springInstance.port = port
 
         springInstance.process = subProcessService.startProcess(
                 workspaceRootPath.toFile(),
@@ -129,7 +130,7 @@ class SpringInstanceManager(
         )
         springInstance.zuulMappingId = zuulService.addMapping(
                 "/api/spring/${springInstance.subdomain.value}/**",
-                "http://localhost:${instance.port}"
+                "http://localhost:${port.value}"
         )
 
         springInstance.status = InstanceStatus.RUNNING
