@@ -69,3 +69,7 @@ pre.code code {
     overflow-y: scroll;
     max-height: 80vh;
 }
+
+.text-small {
+    font-size: 12px;
+}
