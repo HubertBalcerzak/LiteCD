@@ -35,9 +35,16 @@ class PortProviderServiceImpl(
     override fun getPort(): Port {
         synchronized(takenPorts) {
             if (numberOfTotalPorts <= takenPorts.size) throw IllegalStateException("There are no available ports")
-            while (takenPorts.containsKey(nextPort)) nextPort = (nextPort + 1) % maxPort + minPort
-            return Port(nextPort)
+            while (takenPorts.containsKey(nextPort)) incrementNextPort()
+            return Port(nextPort).also {
+                takenPorts[nextPort] = it
+                incrementNextPort()
+            }
         }
+    }
+
+    private fun incrementNextPort() {
+        nextPort = (nextPort - minPort + 1) % maxPort + minPort
     }
 
     @Synchronized
