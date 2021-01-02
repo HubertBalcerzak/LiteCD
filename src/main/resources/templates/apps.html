@@ -20,13 +20,24 @@
       </div>
       <!--TODO add pagination-->
       <div class="list-group">
-        <a th:each="app: ${applications}" class="list-group-item list-group-item-action flex" th:href="${'/app/' + app.id}">
+        <a th:each="app: ${applications}" class="list-group-item list-group-item-action flex"
+           th:href="${'/app/' + app.id}">
           <div class="container">
             <div class="row">
-              <p class="col" th:text="${app.name.value}" style="margin-bottom: 0"></p>
-              <div class="col">
-                <span th:if="${app.visibility == T(me.hubertus248.deployer.data.entity.Visibility).PUBLIC}" class="badge badge-success float-right ml-3">Public</span>
-                <span class="badge badge-secondary float-right" th:text="${instanceManagerService.getManagerForApplication(app).getFriendlyName()}">Running</span>
+              <div class="col-12 col-sm-5 col-md-5 col-lg-8">
+                <p class="text-truncate" th:text="${app.name.value}" style="margin-bottom: 0"></p>
+              </div>
+              <div class="col-12 col-sm-7 col-md-7 col-lg-4">
+                <div class="row">
+                  <div class="col-6">
+                    <span th:if="${app.visibility == T(me.hubertus248.deployer.data.entity.Visibility).PUBLIC}"
+                          class="badge badge-success float-right ml-3">Public</span>
+                  </div>
+                  <div class="col-6">
+                    <span class="badge badge-secondary float-right"
+                          th:text="${instanceManagerService.getManagerForApplication(app).getFriendlyName()}">Running</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
