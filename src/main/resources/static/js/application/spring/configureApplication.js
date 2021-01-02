@@ -1,5 +1,4 @@
 async function saveDefaultEnvironment(appId) {
-    // const csrfHeaderName = document.querySelector("meta[name='_csrf_header']").getAttribute('content')
     const csrfHeaderValue = document.querySelector("meta[name='_csrf']").getAttribute('content')
 
 

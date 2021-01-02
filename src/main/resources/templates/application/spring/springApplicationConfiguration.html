@@ -40,6 +40,7 @@
               <div class="row mb-3">
                 <div class="col flex justify-content-end">
                   <button class="btn btn-secondary mr-3" onclick="addRow()">New</button>
+                  <a class="btn btn-secondary mr-3" th:href="|/app/${app.id}|">Cancel</a>
                   <button class="btn btn-primary" th:onclick="|saveDefaultEnvironment(${app.id})|">Save</button>
                 </div>
               </div>

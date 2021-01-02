@@ -14,11 +14,13 @@
     <div th:replace="${instanceManager.getCustomApplicationInfoFragment()}::customApplicationInfo"></div>
   </div>
 
-  <section>
+  <section
+      th:with="showInstanceCreate=${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST) && #authorization.expression('isAuthenticated()')}"
+      >
     <div class="container">
       <div class="row pb-3">
-        <h3 class="col" th:text="${app.name.value}"></h3>
-        <div sec:authorize="hasRole('deployer_admin')" class="btn-group float-right" role="group">
+        <h3 class="col text-truncate" th:text="${app.name.value}"></h3>
+        <div sec:authorize="hasRole('deployer_admin')" class="btn-group float-right mr-3" role="group">
           <button
               th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).CUSTOM_APPLICATION_INFO)}"
               type="button"
@@ -43,16 +45,17 @@
 
 
       <div class="row">
-        <div class="col">
+        <div class="mb-4" th:classappend="${showInstanceCreate} ? 'col-12 col-lg-6' : col">
           <div class="row">
-            <h5>Running instances:</h5>
+            <h5 class="col">Running instances:</h5>
 
           </div>
           <div class="row">
             <p th:if="${instances.isEmpty()}">There are no running instances</p>
             <ul class="list-group col">
-              <li th:each="instance: ${instances}" class="list-group-item d-flex justify-content-between align-items-center">
-                <p class="no-margin" th:text="${instance.key.value}"></p>
+              <li th:each="instance: ${instances}"
+                  class="list-group-item d-flex justify-content-between align-items-center">
+                <p class="no-margin text-truncate" th:text="${instance.key.value}"></p>
                 <div>
                   <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).RUNNING}"
                         class="badge badge-success">Running</span>
@@ -66,17 +69,17 @@
 
           </div>
         </div>
-        <div class="col"
-             sec:authorize="isAuthenticated()"
-             th:if="${instanceManager.supportsFeature(T(me.hubertus248.deployer.instance.InstanceManagerFeature).POSSIBLE_INSTANCE_LIST)}">
+        <div class="col-12 col-lg-6"
+             th:if="${showInstanceCreate}">
           <div class="row">
             <h5 class="col">Create Instance:</h5>
           </div>
           <div class="row">
             <p th:if="${possibleInstances.isEmpty()}">There are no available templates</p>
             <ul class="list-group col">
-              <li th:each="instance: ${possibleInstances}" class="list-group-item d-flex justify-content-between align-items-center">
-                <p class="no-margin" th:text="${instance.key.value}"></p>
+              <li th:each="instance: ${possibleInstances}"
+                  class="list-group-item d-flex justify-content-between align-items-center">
+                <p class="no-margin text-truncate" th:text="${instance.key.value}"></p>
                 <div>
 
                   <span th:if="${instance.alreadyCreated}"
@@ -114,7 +117,8 @@
         </div>
       </div>
     </div>
-    <div sec:authorize="hasRole('deployer_admin')" class="modal fade" tabindex="-1" role="dialog" id="deleteApplicationModal">
+    <div sec:authorize="hasRole('deployer_admin')" class="modal fade" tabindex="-1" role="dialog"
+         id="deleteApplicationModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
