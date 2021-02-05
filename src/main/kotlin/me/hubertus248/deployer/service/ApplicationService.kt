@@ -9,6 +9,7 @@ import me.hubertus248.deployer.data.reposiotry.ApplicationRepository
 import me.hubertus248.deployer.exception.NotFoundException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import javax.transaction.Transactional
@@ -16,9 +17,9 @@ import javax.transaction.Transactional
 interface ApplicationService {
     fun createApplication(name: ApplicationName, visibility: Visibility, managerName: InstanceManagerName): Long
 
-    fun listApplications(pageable: Pageable): Set<Application>
+    fun listApplications(pageable: Pageable): Page<Application>
 
-    fun listPublicApplications(pageable: Pageable): Set<Application>
+    fun listPublicApplications(pageable: Pageable): Page<Application>
 
     fun findApplication(id: Long, includeRestricted: Boolean = false): Application?
 
@@ -27,14 +28,18 @@ interface ApplicationService {
 
 @Service
 class ApplicationServiceImpl(
-        private val applicationRepository: ApplicationRepository,
-        private val instanceManagerService: InstanceManagerService
+    private val applicationRepository: ApplicationRepository,
+    private val instanceManagerService: InstanceManagerService
 ) : ApplicationService {
 
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @Transactional
-    override fun createApplication(name: ApplicationName, visibility: Visibility, managerName: InstanceManagerName): Long {
+    override fun createApplication(
+        name: ApplicationName,
+        visibility: Visibility,
+        managerName: InstanceManagerName
+    ): Long {
         val oldApp = applicationRepository.findFirstByName(name)
         if (oldApp != null) throw BadRequestException()
 
@@ -44,12 +49,12 @@ class ApplicationServiceImpl(
         return newApplication.id
     }
 
-    override fun listApplications(pageable: Pageable): Set<Application> {
-        return applicationRepository.findAll(pageable).toSet()
+    override fun listApplications(pageable: Pageable): Page<Application> {
+        return applicationRepository.findAll(pageable)
     }
 
-    override fun listPublicApplications(pageable: Pageable): Set<Application> {
-        return applicationRepository.findAllPublic(pageable).toSet()
+    override fun listPublicApplications(pageable: Pageable): Page<Application> {
+        return applicationRepository.findAllPublic(pageable)
     }
 
     override fun findApplication(id: Long, includeRestricted: Boolean): Application? {
