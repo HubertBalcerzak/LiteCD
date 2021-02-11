@@ -56,7 +56,7 @@
               <li th:each="instance: ${instances}"
                   class="list-group-item d-flex justify-content-between align-items-center">
                 <p class="no-margin text-truncate" th:text="${instance.key.value}"></p>
-                <div>
+                <div class="ml-auto mr-4">
                   <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).RUNNING}"
                         class="badge badge-success">Running</span>
                   <span th:if="${instance.status == T(me.hubertus248.deployer.data.entity.InstanceStatus).STOPPED}"
@@ -80,7 +80,7 @@
               <li th:each="instance: ${possibleInstances}"
                   class="list-group-item d-flex justify-content-between align-items-center">
                 <p class="no-margin text-truncate" th:text="${instance.key.value}"></p>
-                <div>
+                <div class="ml-auto mr-4">
 
                   <span th:if="${instance.alreadyCreated}"
                         class="badge badge-secondary">Already exists</span>

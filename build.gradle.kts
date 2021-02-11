@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "me.hubertus248"
-version = "0.1"
+version = "0.2"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
