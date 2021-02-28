@@ -73,3 +73,8 @@ pre.code code {
 .text-small {
     font-size: 12px;
 }
+
+.dropdown-menu.right {
+    right: 0;
+    left: unset;
+}
