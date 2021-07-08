@@ -79,3 +79,8 @@ pre.code code {
     grid-template-columns: 1fr auto auto;
     grid-column-gap: 1.25rem;
 }
+
+.dropdown-menu.right {
+    right: 0;
+    left: unset;
+}
