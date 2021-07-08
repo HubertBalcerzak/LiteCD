@@ -1,9 +1,8 @@
 package me.hubertus248.deployer.instance.spring.instance
 
 import me.hubertus248.deployer.data.reposiotry.InstanceRepository
+import me.hubertus248.deployer.data.reposiotry.InstanceWithEnvironmentRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface SpringInstanceRepository : InstanceRepository<SpringInstance> {
-    fun findFirstById(id: Long): SpringInstance?
-}
+interface SpringInstanceRepository : InstanceRepository<SpringInstance>

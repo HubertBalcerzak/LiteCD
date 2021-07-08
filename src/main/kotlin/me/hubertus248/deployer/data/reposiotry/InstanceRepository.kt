@@ -8,10 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface InstanceRepository<T: Instance>: JpaRepository<T, Long> {
+interface InstanceRepository<T : Instance> : JpaRepository<T, Long> {
 
-    fun findFirstByKeyAndApplication(instanceKey: InstanceKey,
-                                     application: Application): T?
+    fun findFirstById(instanceId: Long): T?
+
+    fun findFirstByKeyAndApplication(
+        instanceKey: InstanceKey,
+        application: Application
+    ): T?
 
     fun findAllByApplication_Id(appId: Long, pageable: Pageable): List<T>
 

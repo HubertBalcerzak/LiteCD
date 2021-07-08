@@ -1,24 +1,13 @@
-package me.hubertus248.deployer.instance.spring.instance
+package me.hubertus248.deployer.instance.docker.data
 
 import me.hubertus248.deployer.data.entity.*
-import me.hubertus248.deployer.instance.spring.application.SpringApplication
 import javax.persistence.Embedded
 import javax.persistence.Entity
-import javax.persistence.OneToMany
-import javax.persistence.OneToOne
 
 @Entity
-class SpringInstance(
-    @OneToOne
-    val workspace: Workspace,
-
-    @OneToOne
-    var process: SubProcess?,
-
-    @Embedded
+class DockerInstance(
     var subdomain: DomainLabel,
 
-    @Embedded
     var zuulMappingId: ZuulMappingId?,
 
     environment: MutableSet<EnvironmentVariable>,
@@ -27,6 +16,6 @@ class SpringInstance(
     var port: Port?,
 
     key: InstanceKey,
-    application: SpringApplication,
+    application: DockerApplication,
     status: InstanceStatus = InstanceStatus.STOPPED
 ) : InstanceWithEnvironment(environment, key, application, status)

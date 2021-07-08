@@ -6,11 +6,9 @@ import me.hubertus248.deployer.instance.spring.application.SpringApplication
 import me.hubertus248.deployer.instance.spring.application.SpringApplicationRepository
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.security.IsAdmin
-import me.hubertus248.deployer.service.InstanceManagerService
 import me.hubertus248.deployer.service.LogService
-import org.apache.commons.io.IOExceptionWithCause
+import me.hubertus248.deployer.service.EnvironmentService
 import org.apache.commons.io.IOUtils
-import org.bouncycastle.asn1.iana.IANAObjectIdentifiers
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ContentDisposition
@@ -25,11 +23,11 @@ import javax.servlet.http.HttpServletResponse
 @Controller
 @RequestMapping("/spring")
 class SpringAppConfigurationController(
-        private val springApplicationRepository: SpringApplicationRepository,
-        private val springEnvironmentService: SpringEnvironmentService,
-        private val springInstanceRepository: SpringInstanceRepository,
-        private val springInstanceManager: SpringInstanceManager,
-        private val logService: LogService
+    private val springApplicationRepository: SpringApplicationRepository,
+    private val environmentService: EnvironmentService,
+    private val springInstanceRepository: SpringInstanceRepository,
+    private val springInstanceManager: SpringInstanceManager,
+    private val logService: LogService
 ) {
 
     @Value("\${deployer.domain}")
@@ -42,7 +40,7 @@ class SpringAppConfigurationController(
     fun configureSpringApp(@PathVariable appId: Long, model: Model): String {
         val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
         model.addAttribute("app", application)
-        model.addAttribute("env", springEnvironmentService.getEnvironment(application))
+        model.addAttribute("env", environmentService.getEnvironment(application))
         return "application/spring/springApplicationConfiguration"
     }
 
@@ -54,7 +52,7 @@ class SpringAppConfigurationController(
         model.addAttribute("app", instance.application as SpringApplication)
         model.addAttribute("instanceManager", springInstanceManager)
         model.addAttribute("domain", domain)
-        model.addAttribute("env", springEnvironmentService.getRawEnvironment(instance))
+        model.addAttribute("env", environmentService.getRawEnvironment(instance))
         model.addAttribute("logs", logService.getRecentLogs(instance.workspace))
         return "application/spring/springInstancePage"
     }

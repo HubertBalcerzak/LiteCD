@@ -6,13 +6,14 @@ import me.hubertus248.deployer.data.entity.Secret
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstanceService
 import me.hubertus248.deployer.security.IsAdmin
+import me.hubertus248.deployer.service.EnvironmentService
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
 class SpringAppRestController(
         private val availableSpringInstanceService: AvailableSpringInstanceService,
-        private val springEnvironmentService: SpringEnvironmentService
+        private val environmentService: EnvironmentService
 ) {
 
     @PostMapping("/api/pub/spring/add")
@@ -30,12 +31,12 @@ class SpringAppRestController(
     @IsAdmin
     @PostMapping("/spring/saveApplicationEnv/{appId}")
     fun updateDefaultEnvironment(@PathVariable appId: Long, @RequestBody environment: EnvironmentDTO) {
-        springEnvironmentService.updateApplicationEnvironment(appId, environment)
+        environmentService.updateApplicationEnvironment(appId, environment)
     }
 
     @IsAdmin
     @PostMapping("/spring/saveInstanceEnv/{instanceId}")
     fun updateInstanceEnvironment(@PathVariable instanceId: Long, @RequestBody environment: EnvironmentDTO) {
-        springEnvironmentService.updateInstanceEnvironment(instanceId, environment)
+        environmentService.updateInstanceEnvironment(instanceId, environment)
     }
 }

@@ -1,5 +1,6 @@
 package me.hubertus248.deployer.instance.spring
 
+import me.hubertus248.deployer.configuration.LitecdProperties
 import me.hubertus248.deployer.data.dto.AvailableInstance
 import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.exception.BadRequestException
@@ -15,10 +16,7 @@ import me.hubertus248.deployer.instance.spring.instance.SpringInstance
 import me.hubertus248.deployer.instance.spring.instance.SpringInstanceRepository
 import me.hubertus248.deployer.service.*
 import me.hubertus248.deployer.util.Util
-import org.hibernate.annotations.NotFound
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.data.domain.Pageable
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Component
 import java.nio.file.Files
 import java.nio.file.Path
@@ -29,22 +27,23 @@ val INSTANCE_MANAGER_SPRING_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_SP
 
 @Component
 class SpringInstanceManager(
-        private val springApplicationRepository: SpringApplicationRepository,
-        private val springInstanceRepository: SpringInstanceRepository,
-        private val availableSpringInstanceService: AvailableSpringInstanceService,
-        private val workspaceService: WorkspaceService,
-        private val filesystemStorageService: FilesystemStorageService,
-        private val subProcessService: SubProcessService,
-        private val zuulService: ZuulService,
-        private val springEnvironmentService: SpringEnvironmentService,
-        private val portProviderService: PortProviderService
+    private val springApplicationRepository: SpringApplicationRepository,
+    private val springInstanceRepository: SpringInstanceRepository,
+    private val availableSpringInstanceService: AvailableSpringInstanceService,
+    private val workspaceService: WorkspaceService,
+    private val filesystemStorageService: FilesystemStorageService,
+    private val subProcessService: SubProcessService,
+    private val zuulService: ZuulService,
+    private val environmentService: EnvironmentService,
+    private val portProviderService: PortProviderService,
+    private val litecdProperties: LitecdProperties
 ) : InstanceManager() {
 
-    @Value("\${deployer.domain}")
-    private val domain: String = ""
-
-    @Value("\${deployer.protocol}")
-    private val protocol: String = ""
+//    @Value("\${deployer.domain}")
+//    private val domain: String = ""
+//
+//    @Value("\${deployer.protocol}")
+//    private val protocol: String = ""
 
     override fun getFriendlyName(): String = "Spring Application"
 
@@ -57,30 +56,32 @@ class SpringInstanceManager(
     }
 
     override fun listInstances(appId: Long, pageable: Pageable): List<Instance> {
-        return springInstanceRepository.findAllByApplication_Id(appId, pageable).apply { this.forEach { updateInstanceStatus(it) } }
+        return springInstanceRepository.findAllByApplication_Id(appId, pageable).onEach { updateInstanceStatus(it) }
     }
 
     override fun getAvailableFeatures(): Set<InstanceManagerFeature> = setOf(
-            InstanceManagerFeature.CUSTOM_APPLICATION_INFO,
-            InstanceManagerFeature.POSSIBLE_INSTANCE_LIST,
-            InstanceManagerFeature.CONFIGURABLE_APPLICATION,
-            InstanceManagerFeature.CONFIGURABLE_INSTANCES,
-            InstanceManagerFeature.STOPPABLE_INSTANCES)
+        InstanceManagerFeature.CUSTOM_APPLICATION_INFO,
+        InstanceManagerFeature.POSSIBLE_INSTANCE_LIST,
+        InstanceManagerFeature.CONFIGURABLE_APPLICATION,
+        InstanceManagerFeature.CONFIGURABLE_INSTANCES,
+        InstanceManagerFeature.STOPPABLE_INSTANCES
+    )
 
-    override fun getOpenUrl(instance: Instance): String = "$protocol://${(instance as SpringInstance).subdomain.value}.$domain"
+    override fun getOpenUrl(instance: Instance): String =
+        "${litecdProperties.protocol}://${(instance as SpringInstance).subdomain.value}.${litecdProperties.domain}"
 
     override fun prepareForDeletion(appId: Long) {
         val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
         springInstanceRepository.findAllByApplication_Id(appId).forEach { deleteInstance(it, application) }
         availableSpringInstanceService.deleteAllArtifacts(application)
-        springEnvironmentService.deleteDefaultEnvironment(application)
+        environmentService.deleteDefaultEnvironment(application)
     }
 
     override fun getCustomApplicationInfoFragment(): String = "application/spring/springApplicationInfo.html"
 
     override fun getPossibleInstanceList(appId: Long, pageable: Pageable): List<AvailableInstance> =
-            availableSpringInstanceService.listArtifacts(appId, pageable)
-                    .map { AvailableInstance(it.key, it.lastUpdate, it.actualInstance != null) }
+        availableSpringInstanceService.listArtifacts(appId, pageable)
+            .map { AvailableInstance(it.key, it.lastUpdate, it.actualInstance != null) }
 
     @Transactional
     override fun createInstance(appId: Long, instanceKey: InstanceKey): Instance {
@@ -89,21 +90,23 @@ class SpringInstanceManager(
         if (oldInstance != null) throw BadRequestException()
 
         val instanceTemplate = availableSpringInstanceService.findArtifact(application, instanceKey)
-                ?: throw BadRequestException()
+            ?: throw BadRequestException()
 
         val newWorkspace = workspaceService.createWorkspace()
 
         try {
             prepareWorkspace(newWorkspace, instanceTemplate)
-            val newInstance = SpringInstance(newWorkspace,
-                    null,
-                    DomainLabel.randomLabel(),
-                    null,
-                    mutableSetOf(),
-                    null,
-                    instanceKey,
-                    application)
-            springEnvironmentService.setDefaultInstanceEnvironment(newInstance)
+            val newInstance = SpringInstance(
+                newWorkspace,
+                null,
+                DomainLabel.randomLabel(),
+                null,
+                mutableSetOf(),
+                null,
+                instanceKey,
+                application
+            )
+            environmentService.setDefaultInstanceEnvironment(newInstance)
             instanceTemplate.actualInstance = newInstance
             return newInstance
         } catch (e: Exception) {
@@ -123,14 +126,20 @@ class SpringInstanceManager(
         springInstance.port = port
 
         springInstance.process = subProcessService.startProcess(
-                workspaceRootPath.toFile(),
-                Path.of(workspaceRootPath.toString(), LOG_FILE_NAME).toFile(),
-                listOf("java", "-jar", "app.jar"),//TODO allow customization
-                springEnvironmentService.getEnvironment(springInstance)
+            workspaceRootPath.toFile(),
+            Path.of(workspaceRootPath.toString(), LOG_FILE_NAME).toFile(),
+            listOf("java", "-jar", "app.jar"),//TODO allow customization
+            environmentService.getEnvironment(
+                springInstance,
+                listOf(
+                    Keyword("\$PORT\$", instance.port?.value.toString()),
+                    Keyword("\$SUBDOMAIN\$", instance.subdomain.value)
+                )
+            )
         )
         springInstance.zuulMappingId = zuulService.addMapping(
-                "/api/spring/${springInstance.subdomain.value}/**",
-                "http://localhost:${port.value}"
+            "/api/spring/${springInstance.subdomain.value}/**",
+            "http://localhost:${port.value}"
         )
 
         springInstance.status = InstanceStatus.RUNNING
@@ -140,9 +149,11 @@ class SpringInstanceManager(
     private fun prepareWorkspace(workspace: Workspace, instanceTemplate: AvailableSpringInstance) {
 
         val workspaceRoot = workspaceService.getWorkspaceRoot(workspace)
-        Files.copy(filesystemStorageService.getFileContent(instanceTemplate.artifact.fileKey)
+        Files.copy(
+            filesystemStorageService.getFileContent(instanceTemplate.artifact.fileKey)
                 ?: throw IllegalStateException("Artifact not found"),
-                Path.of(workspaceRoot.toString(), "app.jar"))
+            Path.of(workspaceRoot.toString(), "app.jar")
+        )
     }
 
     private fun updateInstanceStatus(instance: SpringInstance) {
@@ -159,7 +170,7 @@ class SpringInstanceManager(
     override fun stopInstance(appId: Long, instanceKey: InstanceKey) {
         val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
         val instance = springInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
-                ?: throw NotFoundException()
+            ?: throw NotFoundException()
 
         stopInstance(instance)
     }
@@ -168,7 +179,7 @@ class SpringInstanceManager(
     override fun deleteInstance(appId: Long, instanceKey: InstanceKey) {
         val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
         val instance = springInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
-                ?: throw NotFoundException()
+            ?: throw NotFoundException()
 
         deleteInstance(instance, application)
 
@@ -178,12 +189,12 @@ class SpringInstanceManager(
     override fun recreateInstance(appId: Long, instanceKey: InstanceKey) {
         val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
         val instance = springInstanceRepository.findFirstByKeyAndApplication(instanceKey, application)
-                ?: throw NotFoundException()
+            ?: throw NotFoundException()
 
         stopInstance(instance)
 
         val instanceTemplate = availableSpringInstanceService.findArtifact(application, instanceKey)
-                ?: throw IllegalStateException("Instance template for application ${application.name.value} and key ${instance.key.value} does not exist")
+            ?: throw IllegalStateException("Instance template for application ${application.name.value} and key ${instance.key.value} does not exist")
 
         workspaceService.clearWorkspace(instance.workspace)
         prepareWorkspace(instance.workspace, instanceTemplate)
@@ -209,10 +220,10 @@ class SpringInstanceManager(
         stopInstance(instance)
 
         val instanceTemplate = availableSpringInstanceService.findArtifact(application, instance.key)
-                ?: throw IllegalStateException("Source template does not exist")
+            ?: throw IllegalStateException("Source template does not exist")
 
         workspaceService.deleteWorkspace(instance.workspace)
-        springEnvironmentService.deleteInstanceEnvironment(instance)
+        environmentService.deleteInstanceEnvironment(instance)
         instanceTemplate.actualInstance = null
         springInstanceRepository.delete(instance)
     }
