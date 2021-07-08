@@ -28,6 +28,7 @@ dependencies {
 	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 	implementation("commons-fileupload:commons-fileupload:1.3.3")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.3.RELEASE")
+	implementation("org.flywaydb:flyway-core")
 
 	runtimeOnly("mysql:mysql-connector-java")
 	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
