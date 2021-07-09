@@ -16,13 +16,20 @@
         <h3 th:text="|Configure application ${app.name.value}|"></h3>
       </div>
     </div>
+<!--    <div class="row">-->
+<!--      <div class="col">-->
+<!--        <div class="">-->
+<!--          -->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="row">
       <div class="col">
         <div th:replace="fragments/defaultEnvConfigurationForm :: defaultEnvConfigurationForm"></div>
       </div>
     </div>
   </div>
-<!--  TODO fix positioning-->
+  <!--  TODO fix positioning-->
   <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
     <div style="position: absolute; top: 0; right: 0;">
       <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
@@ -37,7 +44,6 @@
       </div>
     </div>
   </div>
-  <script src="/js/application/spring/environmentVariableList.js"></script>
   <script src="/js/toast.js"></script>
 </section>
 </body>

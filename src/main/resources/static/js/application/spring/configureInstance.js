@@ -2,7 +2,7 @@ async function saveInstanceEnvironment(instanceId) {
     const csrfHeaderValue = document.querySelector("meta[name='_csrf']").getAttribute('content')
 
 
-    const response = await fetch(`/spring/saveInstanceEnv/${instanceId}`, {
+    const response = await fetch(`/api/env/instance/${instanceId}`, {
         method: "POST",
         credentials: "same-origin",
         headers: {

@@ -1,5 +1,6 @@
 package me.hubertus248.deployer.instance.spring
 
+import me.hubertus248.deployer.configuration.LitecdProperties
 import me.hubertus248.deployer.data.entity.DomainLabel
 import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.instance.spring.application.SpringApplication
@@ -27,11 +28,9 @@ class SpringAppConfigurationController(
     private val environmentService: EnvironmentService,
     private val springInstanceRepository: SpringInstanceRepository,
     private val springInstanceManager: SpringInstanceManager,
-    private val logService: LogService
+    private val logService: LogService,
+    private val litecdProperties: LitecdProperties
 ) {
-
-    @Value("\${deployer.domain}")
-    private val domain: String = ""
 
     private val logger = LoggerFactory.getLogger(this.javaClass)
 
@@ -51,7 +50,7 @@ class SpringAppConfigurationController(
         model.addAttribute("instance", instance)
         model.addAttribute("app", instance.application as SpringApplication)
         model.addAttribute("instanceManager", springInstanceManager)
-        model.addAttribute("domain", domain)
+        model.addAttribute("domain", litecdProperties.domain)
         model.addAttribute("env", environmentService.getRawEnvironment(instance))
         model.addAttribute("logs", logService.getRecentLogs(instance.workspace))
         return "application/spring/springInstancePage"
@@ -71,11 +70,13 @@ class SpringAppConfigurationController(
         val logFile = logService.getLogFile(instance.workspace)
 
         response.contentType = "text/plain"
-        response.addHeader("Content-Disposition",
-                ContentDisposition.builder("attachment")
-                        .filename("log.txt", Charset.forName("UTF-8")) //TODO add date
-                        .build()
-                        .toString())
+        response.addHeader(
+            "Content-Disposition",
+            ContentDisposition.builder("attachment")
+                .filename("log.txt", Charset.forName("UTF-8")) //TODO add date
+                .build()
+                .toString()
+        )
         if (logFile != null) {
 
             val stream = logFile.inputStream()

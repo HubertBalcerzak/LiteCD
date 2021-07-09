@@ -11,5 +11,5 @@ abstract class ApplicationWithEnvironment(
     instanceManagerName: InstanceManagerName,
 
     @OneToMany(fetch = FetchType.LAZY)
-    val defaultEnvironment: MutableSet<EnvironmentVariable> = mutableSetOf()
+    open val defaultEnvironment: MutableSet<EnvironmentVariable> = mutableSetOf()
 ) : Application(0, name, visibility, instanceManagerName)

@@ -4,7 +4,4 @@ import me.hubertus248.deployer.data.reposiotry.InstanceRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface StaticFileInstanceRepository : InstanceRepository<StaticFileInstance> {
-
-    fun findFirstById(id: Long): StaticFileInstance?
-}
+interface StaticFileInstanceRepository : InstanceRepository<StaticFileInstance>

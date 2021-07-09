@@ -1,42 +1,33 @@
 package me.hubertus248.deployer.instance.spring
 
-import me.hubertus248.deployer.data.dto.EnvironmentDTO
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instance.spring.instance.AvailableSpringInstanceService
-import me.hubertus248.deployer.security.IsAdmin
 import me.hubertus248.deployer.service.EnvironmentService
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestHeader
+import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
 @RestController
 class SpringAppRestController(
-        private val availableSpringInstanceService: AvailableSpringInstanceService,
-        private val environmentService: EnvironmentService
+    private val availableSpringInstanceService: AvailableSpringInstanceService
 ) {
 
     @PostMapping("/api/pub/spring/add")
-    fun uploadArtifact(@RequestParam app: Long,
-                       @RequestParam key: String,
-                       @RequestParam file: MultipartFile,
-                       @RequestParam secret: String?,
-                       @RequestHeader("secret") secretHeader: String?) {
+    fun uploadArtifact(
+        @RequestParam app: Long,
+        @RequestParam key: String,
+        @RequestParam file: MultipartFile,
+        @RequestParam secret: String?,
+        @RequestHeader("secret") secretHeader: String?
+    ) {
 
         val actualSecret = Secret(secret ?: secretHeader ?: throw BadRequestException())
 
         availableSpringInstanceService.addArtifact(app, actualSecret, file, InstanceKey(key))
     }
 
-    @IsAdmin
-    @PostMapping("/spring/saveApplicationEnv/{appId}")
-    fun updateDefaultEnvironment(@PathVariable appId: Long, @RequestBody environment: EnvironmentDTO) {
-        environmentService.updateApplicationEnvironment(appId, environment)
-    }
-
-    @IsAdmin
-    @PostMapping("/spring/saveInstanceEnv/{instanceId}")
-    fun updateInstanceEnvironment(@PathVariable instanceId: Long, @RequestBody environment: EnvironmentDTO) {
-        environmentService.updateInstanceEnvironment(instanceId, environment)
-    }
 }

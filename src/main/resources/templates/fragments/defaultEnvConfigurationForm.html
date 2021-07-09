@@ -1,0 +1,37 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div class="card" th:fragment="defaultEnvConfigurationForm">
+  <div class="card-header">
+    <h4>Default Environment</h4>
+  </div>
+  <div class="card-body">
+    <div class="container">
+      <div id="env">
+        <div class="row" th:each="variable: ${env.entrySet()}">
+          <div class="col">
+            <div class="input-group mb-3 envVariable">
+              <input type="text" class="form-control" placeholder="Variable name" name="envVariableName"
+                     th:value="${variable.key}">
+              <input type="text" class="form-control" placeholder="Variable value" name="envVariableValue"
+                     th:value="${variable.value}">
+              <div class="input-group-append">
+                <button class="btn btn-outline-danger" onclick="deleteButtonHandler(this)">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col flex justify-content-end">
+          <button class="btn btn-secondary mr-3" onclick="addRow()">New</button>
+          <a class="btn btn-secondary mr-3" th:href="|/app/${app.id}|">Cancel</a>
+          <button class="btn btn-primary" th:onclick="|saveDefaultEnvironment(${app.id})|">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="/js/application/configureApplication.js"></script>
+  <script src="/js/application/environmentVariableList.js"></script>
+</div>
+</html>

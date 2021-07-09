@@ -15,7 +15,7 @@ import me.hubertus248.deployer.service.EnvironmentService
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Component
 
-val INSTANCE_MANAGER_STATIC_FILE_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_DOCKER")
+val INSTANCE_MANAGER_DOCKER_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_DOCKER")
 
 
 @Component
@@ -27,7 +27,7 @@ class DockerInstanceManager(
 ) : InstanceManager() {
     override fun getFriendlyName(): String = "Docker Application"
 
-    override fun getUniqueName(): InstanceManagerName = INSTANCE_MANAGER_STATIC_FILE_NAME
+    override fun getUniqueName(): InstanceManagerName = INSTANCE_MANAGER_DOCKER_NAME
 
     override fun registerApplication(name: ApplicationName, visibility: Visibility): Application {
         val dockerApplication = DockerApplication(null, null, null, name, visibility)
@@ -85,4 +85,8 @@ class DockerInstanceManager(
     private fun deleteInstance(instance: DockerInstance, application: DockerApplication) {
 
     }
+
+    override fun configureApplicationUrl(appId: Long): String = "/docker/configureApp/${appId}"
+
+    override fun configureInstanceUrl(appId: Long, instanceId: Long): String = "/docker/configureInstance/$instanceId"
 }

@@ -5,7 +5,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 data class RegistryUsername(
-    @Column(length = 128, updatable = true, unique = false, nullable = false, name = "registryUsername")
+    @Column(length = 128, updatable = true, unique = false, name = "registryUsername")
     val value: String
 ) {
     init {

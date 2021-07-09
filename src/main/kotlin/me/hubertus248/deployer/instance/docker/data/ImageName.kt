@@ -5,7 +5,7 @@ import javax.persistence.Embeddable
 
 @Embeddable
 data class ImageName(
-    @Column(length = 255, nullable = false, updatable = false, unique = false, name = "imageName")
+    @Column(length = 255, updatable = true, unique = false, name = "imageName")
     val value: String
 ) {
     init {

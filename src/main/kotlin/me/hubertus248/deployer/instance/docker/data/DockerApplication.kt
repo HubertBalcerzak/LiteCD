@@ -1,6 +1,7 @@
 package me.hubertus248.deployer.instance.docker.data
 
 import me.hubertus248.deployer.data.entity.*
+import me.hubertus248.deployer.instance.docker.INSTANCE_MANAGER_DOCKER_NAME
 import me.hubertus248.deployer.instance.spring.INSTANCE_MANAGER_SPRING_NAME
 import javax.persistence.Embedded
 import javax.persistence.Entity
@@ -21,4 +22,4 @@ class DockerApplication(
 
     name: ApplicationName,
     visibility: Visibility,
-) : ApplicationWithEnvironment(name, visibility, INSTANCE_MANAGER_SPRING_NAME)
+) : ApplicationWithEnvironment(name, visibility, INSTANCE_MANAGER_DOCKER_NAME)

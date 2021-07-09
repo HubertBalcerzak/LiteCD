@@ -7,7 +7,7 @@ import javax.persistence.OneToMany
 abstract class InstanceWithEnvironment(
 
     @OneToMany
-    val environment: MutableSet<EnvironmentVariable>,
+    open val environment: MutableSet<EnvironmentVariable>,
 
     key: InstanceKey,
     application: ApplicationWithEnvironment,
