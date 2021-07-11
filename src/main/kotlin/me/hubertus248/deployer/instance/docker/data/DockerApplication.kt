@@ -20,6 +20,8 @@ class DockerApplication(
     @Embedded
     val imageName: ImageName?,
 
+    val secret: Secret,
+
     name: ApplicationName,
     visibility: Visibility,
 ) : ApplicationWithEnvironment(name, visibility, INSTANCE_MANAGER_DOCKER_NAME)

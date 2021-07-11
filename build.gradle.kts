@@ -30,6 +30,8 @@ dependencies {
     implementation("commons-fileupload:commons-fileupload:1.3.3")
     implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.3.RELEASE")
     implementation("org.flywaydb:flyway-core")
+    implementation("com.github.docker-java:docker-java:3.2.7")
+    implementation("com.github.docker-java:docker-java-transport-httpclient5:3.2.7")
 
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 

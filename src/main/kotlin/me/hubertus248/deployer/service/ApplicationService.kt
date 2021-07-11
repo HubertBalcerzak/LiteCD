@@ -66,7 +66,7 @@ class ApplicationServiceImpl(
     override fun deleteApplication(appId: Long) {
         val application = applicationRepository.findFirstById(appId) ?: throw NotFoundException()
         val instanceManager = instanceManagerService.getManagerForApplication(application)
-        instanceManager.prepareForDeletion(appId)
+        instanceManager.prepareForApplicationDeletion(appId)
 
         applicationRepository.delete(application)
     }

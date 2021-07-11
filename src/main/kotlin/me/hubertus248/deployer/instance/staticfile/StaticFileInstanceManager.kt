@@ -108,7 +108,7 @@ class StaticFileInstanceManagerImpl(
 
     override fun getOpenUrl(instance: Instance): String = "/open/staticfile/${instance.id}"
 
-    override fun prepareForDeletion(appId: Long) {
+    override fun prepareForApplicationDeletion(appId: Long) {
         staticFileInstanceRepository.findAllByApplication_Id(appId).forEach { deleteInstance(it) }
     }
 

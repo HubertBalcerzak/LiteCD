@@ -16,35 +16,59 @@
         <h3 th:text="|Configure application ${app.name.value}|"></h3>
       </div>
     </div>
-<!--    <div class="row">-->
-<!--      <div class="col">-->
-<!--        <div class="">-->
-<!--          -->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <div class="row mb-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-header">
+            <h4>Docker</h4>
+          </div>
+          <div class="card-body">
+            <div class="container">
+              <form method="post" action="/docker/saveApplication">
+                <input
+                    type="hidden"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"/>
+                <div class="form-group">
+                  <label for="registryLoginInput">Registry login</label>
+                  <input type="text" class="form-control" id="registryLoginInput" name="registryLogin">
+                </div>
+                <div class="form-group">
+                  <label for="registryPasswordInput">Registry password</label>
+                  <input type="password" class="form-control" id="registryPasswordInput" name="registryPassword">
+                </div>
+                <div class="form-group">
+                  <label for="imageInput">Image</label>
+                  <input type="text" class="form-control" id="imageInput" name="image">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col">
         <div th:replace="fragments/defaultEnvConfigurationForm :: defaultEnvConfigurationForm"></div>
       </div>
     </div>
-  </div>
-  <!--  TODO fix positioning-->
-  <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
-    <div style="position: absolute; top: 0; right: 0;">
-      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
-        <div class="toast-header">
-          <strong class="mr-auto">Error</strong>
-          <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="toast-body" id="errorToastBody">
+    <!--  TODO fix positioning-->
+    <div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;">
+      <div style="position: absolute; top: 0; right: 0;">
+        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="errorToast">
+          <div class="toast-header">
+            <strong class="mr-auto">Error</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="toast-body" id="errorToastBody">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="/js/toast.js"></script>
+    <script src="/js/toast.js"></script>
 </section>
 </body>
 </html>

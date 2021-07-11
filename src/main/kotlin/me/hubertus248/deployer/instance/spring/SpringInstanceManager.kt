@@ -70,7 +70,7 @@ class SpringInstanceManager(
     override fun getOpenUrl(instance: Instance): String =
         "${litecdProperties.protocol}://${(instance as SpringInstance).subdomain.value}.${litecdProperties.domain}"
 
-    override fun prepareForDeletion(appId: Long) {
+    override fun prepareForApplicationDeletion(appId: Long) {
         val application = springApplicationRepository.findFirstById(appId) ?: throw NotFoundException()
         springInstanceRepository.findAllByApplication_Id(appId).forEach { deleteInstance(it, application) }
         availableSpringInstanceService.deleteAllArtifacts(application)
