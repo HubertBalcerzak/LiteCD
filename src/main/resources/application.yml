@@ -1,0 +1,47 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto=${DEPLOYER_DDL_AUTO:validate}
+  datasource:
+    url: jdbc:mysql://${DEPLOYER_DB_HOST}/${DEPLOYER_DB_NAME}?serverTimezone=UTC
+    username: ${DEPLOYER_DB_USER}
+    password: ${DEPLOYER_DB_PASS}
+    driver-class-name: org.mariadb.jdbc.Driver
+  thymeleaf:
+    cache: ${DEPLOYER_THYMELEAF_CACHE:true}
+
+server:
+  port: ${DEPLOYER_PORT:8080}
+  forward-headers-strategy: native
+  tomcat:
+    remoteip:
+      remote-ip-header: x-forwarded-for
+      protocol-header: x-forwarded-proto
+  servlet:
+    session:
+      cookie:
+        name: ${DEPLOYER_COOKIE_PREFIX:DEPLOYER}_JSESSIONID
+        path: /
+        domain: ${DEPLOYER_DOMAIN:localhost}
+
+keycloak:
+  auth-server-url: ${DEPLOYER_KEYCLOAK_URL}
+  realm: ${DEPLOYER_KEYCLOAK_REALM}
+  resource: ${DEPLOYER_KEYCLOAK_CLIENT}
+  principal-attribute: preferred_username
+  credentials:
+    secret: ${DEPLOYER_KEYCLOAK_SECRET}
+
+deployer:
+  manager:
+    staticfile:
+      max-file-size: ${DEPLOYER_STATIC_FILE_MAX_SIZE:100000}
+  filesystem-storage-path: ${DEPLOYER_FILESYSTEM_STORAGE_PATH:data}
+  domain: ${DEPLOYER_DOMAIN:localhost:8080}
+  protocol: ${DEPLOYER_PROTOCOL:https}
+
+  allowed-port-range: ${DEPLOYER_PORT_RANGE:9500-10000}
+  displayed-log-size: ${DEPLOYER_DISPLAYED_LOG_SIZE:500000}
+
+zuul:
+  set-content-length: true
