@@ -33,9 +33,7 @@ keycloak:
     secret: ${DEPLOYER_KEYCLOAK_SECRET}
 
 deployer:
-  manager:
-    staticfile:
-      max-file-size: ${DEPLOYER_STATIC_FILE_MAX_SIZE:100000}
+  max-file-size: ${DEPLOYER_STATIC_FILE_MAX_SIZE:100MB}
   filesystem-storage-path: ${DEPLOYER_FILESYSTEM_STORAGE_PATH:data}
   domain: ${DEPLOYER_DOMAIN:localhost:8080}
   protocol: ${DEPLOYER_PROTOCOL:https}

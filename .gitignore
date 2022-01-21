@@ -33,3 +33,5 @@ out/
 
 
 dev.env
+
+application-local.yml

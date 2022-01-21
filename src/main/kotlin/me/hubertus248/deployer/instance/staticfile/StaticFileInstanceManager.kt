@@ -2,8 +2,8 @@ package me.hubertus248.deployer.instance.staticfile
 
 import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.exception.BadRequestException
-import me.hubertus248.deployer.exception.UnauthorizedException
 import me.hubertus248.deployer.exception.NotFoundException
+import me.hubertus248.deployer.exception.UnauthorizedException
 import me.hubertus248.deployer.instance.InstanceManager
 import me.hubertus248.deployer.instance.InstanceManagerFeature
 import me.hubertus248.deployer.instance.InstanceManagerName
@@ -17,9 +17,7 @@ import org.springframework.http.ContentDisposition
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import java.io.IOException
-import java.lang.IllegalStateException
 import java.nio.charset.Charset
-import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 val INSTANCE_MANAGER_STATIC_FILE_NAME = InstanceManagerName("INSTANCE_MANAGER_CORE_STATIC_FILE")
