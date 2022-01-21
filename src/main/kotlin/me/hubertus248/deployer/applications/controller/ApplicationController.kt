@@ -25,13 +25,14 @@ import java.security.Principal
 
 //todo write tests
 @RestController
+@RequestMapping("/api/applications")
 class ApplicationController(
     private val applicationService: ApplicationService,
     private val applicationMapper: ApplicationMapper
 ) {
 
-    @GetMapping("/apps")
-    fun applicationList(
+    @GetMapping
+    fun listApplications(
         principal: Principal?,
         @PageableDefault(size = 10) pageable: Pageable
     ): Page<ApplicationDTO> {
@@ -46,14 +47,14 @@ class ApplicationController(
 
     @IsAdmin
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/app/{appId}")
+    @DeleteMapping("/{appId}")
     fun deleteApplication(@PathVariable appId: Long) {
         applicationService.deleteApplication(appId)
     }
 
     @IsAdmin
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/newApp")
+    @PostMapping
     fun createApplication(@RequestBody @Validated createApplicationDTO: CreateApplicationDTO): ApplicationDTO {
         return applicationService.createApplication(
             ApplicationName(createApplicationDTO.name),
@@ -62,8 +63,8 @@ class ApplicationController(
         ).let(applicationMapper::toApplicationDTO)
     }
 
-    @GetMapping("/app/{appId}")
-    fun getApp(@PathVariable appId: Long, authentication: Authentication?): ApplicationDTO {
+    @GetMapping("/{appId}")
+    fun getApplication(@PathVariable appId: Long, authentication: Authentication?): ApplicationDTO {
         return applicationService.findApplication(appId, authentication?.isAuthenticated ?: false)
             ?.let(applicationMapper::toApplicationDTO) ?: throw NotFoundException()
     }
