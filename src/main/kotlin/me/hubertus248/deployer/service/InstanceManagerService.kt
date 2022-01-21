@@ -1,9 +1,9 @@
 package me.hubertus248.deployer.service
 
-import me.hubertus248.deployer.data.entity.Application
+import me.hubertus248.deployer.applications.model.entity.Application
 import me.hubertus248.deployer.exception.ApplicationCorruptedException
-import me.hubertus248.deployer.instance.InstanceManager
-import me.hubertus248.deployer.instance.InstanceManagerName
+import me.hubertus248.deployer.instancemanager.InstanceManager
+import me.hubertus248.deployer.instancemanager.InstanceManagerName
 import org.springframework.stereotype.Service
 
 interface InstanceManagerService {

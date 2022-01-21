@@ -1,12 +1,13 @@
 package me.hubertus248.deployer.service
 
+import me.hubertus248.deployer.applications.service.ApplicationService
 import me.hubertus248.deployer.data.entity.Instance
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.reposiotry.InstanceRepository
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.exception.NotFoundException
-import me.hubertus248.deployer.instance.InstanceManager
-import me.hubertus248.deployer.instance.InstanceManagerFeature
+import me.hubertus248.deployer.instancemanager.InstanceManager
+import me.hubertus248.deployer.instancemanager.InstanceManagerFeature
 import org.springframework.stereotype.Service
 
 interface InstanceService {
@@ -25,9 +26,9 @@ interface InstanceService {
 
 @Service
 class InstanceServiceImpl(
-        private val applicationService: ApplicationService,
-        private val instanceManagerService: InstanceManagerService,
-        private val instanceRepository: InstanceRepository<Instance>
+    private val applicationService: ApplicationService,
+    private val instanceManagerService: InstanceManagerService,
+    private val instanceRepository: InstanceRepository<Instance>
 ) : InstanceService {
     override fun createAndStart(appId: Long, instanceKey: InstanceKey) {
         val instanceManager = getInstanceManager(appId)

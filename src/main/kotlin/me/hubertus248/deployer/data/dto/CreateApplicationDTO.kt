@@ -1,10 +1,10 @@
 package me.hubertus248.deployer.data.dto
 
-import me.hubertus248.deployer.data.entity.Visibility
-import me.hubertus248.deployer.instance.InstanceManagerName
+import me.hubertus248.deployer.applications.model.entity.Visibility
+import me.hubertus248.deployer.instancemanager.InstanceManagerName
 
 class CreateApplicationDTO(
-        val name: String,
-        val visibility: Visibility,
-        val manager: InstanceManagerName
+    val name: String,
+    val visibility: Visibility,
+    val manager: InstanceManagerName
 )

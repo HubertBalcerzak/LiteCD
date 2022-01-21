@@ -1,20 +1,21 @@
 package me.hubertus248.deployer.data.entity
 
+import me.hubertus248.deployer.applications.model.entity.Application
 import javax.persistence.*
 
 @Entity
 abstract class Instance(
-        @Id
+    @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         open val id: Long,
 
-        @Embedded
+    @Embedded
         open val key: InstanceKey,
 
-        @ManyToOne
+    @ManyToOne
         open val application: Application,
 
-        @Column
+    @Column
         open var status: InstanceStatus
 )
 
