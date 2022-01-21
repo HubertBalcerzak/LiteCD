@@ -1,7 +1,7 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto=${DEPLOYER_DDL_AUTO:validate}
+      ddl-auto: ${DEPLOYER_DDL_AUTO:validate}
   datasource:
     url: jdbc:mysql://${DEPLOYER_DB_HOST}/${DEPLOYER_DB_NAME}?serverTimezone=UTC
     username: ${DEPLOYER_DB_USER}
