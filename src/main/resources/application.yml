@@ -7,8 +7,6 @@ spring:
     username: ${DEPLOYER_DB_USER}
     password: ${DEPLOYER_DB_PASS}
     driver-class-name: org.mariadb.jdbc.Driver
-  thymeleaf:
-    cache: ${DEPLOYER_THYMELEAF_CACHE:true}
 
 server:
   port: ${DEPLOYER_PORT:8080}
