@@ -28,6 +28,8 @@ dependencies {
 	implementation("commons-fileupload:commons-fileupload:1.3.3")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.3.RELEASE")
 	implementation("org.flywaydb:flyway-core")
+	implementation("org.mapstruct:mapstruct:1.4.2.Final")
+	kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 
 	runtimeOnly("mysql:mysql-connector-java")
