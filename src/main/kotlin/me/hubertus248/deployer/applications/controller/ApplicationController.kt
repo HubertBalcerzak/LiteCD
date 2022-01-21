@@ -38,11 +38,9 @@ class ApplicationController(
     ): Page<ApplicationDTO> {
         return if (principal == null) {
             applicationService.listPublicApplications(pageable)
-                .map(applicationMapper::toApplicationDTO)
         } else {
             applicationService.listApplications(pageable)
-                .map(applicationMapper::toApplicationDTO)
-        }
+        }.map(applicationMapper::toApplicationDTO)
     }
 
     @IsAdmin
