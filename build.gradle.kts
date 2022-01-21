@@ -20,13 +20,11 @@ repositories {
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("org.keycloak:keycloak-spring-boot-starter:10.0.2")
-	implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity5")
 	implementation("commons-fileupload:commons-fileupload:1.3.3")
 	implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.3.RELEASE")
 	implementation("org.flywaydb:flyway-core")
@@ -51,8 +49,3 @@ tasks.withType<KotlinCompile> {
 	}
 }
 
-//allOpen {
-//	annotation("javax.persistence.Entity")
-//	annotation("javax.persistence.MappedSuperclass")
-//	annotation("javax.persistence.Embeddable")
-//}
