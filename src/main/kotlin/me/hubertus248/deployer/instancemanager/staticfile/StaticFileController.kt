@@ -2,7 +2,7 @@ package me.hubertus248.deployer.instancemanager.staticfile
 
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
-import me.hubertus248.deployer.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.BadRequestException
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile

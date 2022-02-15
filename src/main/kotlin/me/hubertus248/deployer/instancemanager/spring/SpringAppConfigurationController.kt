@@ -1,7 +1,7 @@
 package me.hubertus248.deployer.instancemanager.spring
 
 import me.hubertus248.deployer.data.entity.DomainLabel
-import me.hubertus248.deployer.exception.NotFoundException
+import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplication
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplicationRepository
 import me.hubertus248.deployer.instancemanager.spring.instance.SpringInstanceRepository

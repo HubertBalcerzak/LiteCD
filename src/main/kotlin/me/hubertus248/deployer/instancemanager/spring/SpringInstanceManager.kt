@@ -5,8 +5,8 @@ import me.hubertus248.deployer.applications.model.entity.ApplicationName
 import me.hubertus248.deployer.applications.model.entity.Visibility
 import me.hubertus248.deployer.data.dto.AvailableInstance
 import me.hubertus248.deployer.data.entity.*
-import me.hubertus248.deployer.exception.BadRequestException
-import me.hubertus248.deployer.exception.NotFoundException
+import me.hubertus248.deployer.common.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.instancemanager.InstanceManager
 import me.hubertus248.deployer.instancemanager.InstanceManagerFeature
 import me.hubertus248.deployer.instancemanager.InstanceManagerName
