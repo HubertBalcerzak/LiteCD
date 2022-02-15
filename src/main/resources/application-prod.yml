@@ -1,0 +1,9 @@
+springfox:
+  documentation:
+    swagger:
+      v2:
+        enabled: false
+    swagger-ui:
+      enabled: false
+    open-api:
+      enabled: false
