@@ -1,9 +1,9 @@
 package me.hubertus248.deployer.instancemanager.spring.instance
 
+import me.hubertus248.deployer.common.exception.AccessDeniedException
+import me.hubertus248.deployer.common.exception.BadRequestException
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
-import me.hubertus248.deployer.exception.BadRequestException
-import me.hubertus248.deployer.exception.UnauthorizedException
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplication
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplicationRepository
 import me.hubertus248.deployer.service.FilesystemStorageService
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.web.multipart.MultipartFile
-import java.lang.IllegalStateException
 import java.time.LocalDateTime
 import javax.transaction.Transactional
 
@@ -40,7 +39,7 @@ class AvailableSpringInstanceServiceImpl(
     override fun addArtifact(appId: Long, secret: Secret, file: MultipartFile, instanceKey: InstanceKey) {
         val app = springApplicationRepository.findFirstById(appId) ?: throw BadRequestException()
 
-        if (secret != app.secret) throw UnauthorizedException()
+        if (secret != app.secret) throw AccessDeniedException()
 
         val older = availableSpringInstanceRepository.findFirstByApplicationAndKey(app, instanceKey)
 

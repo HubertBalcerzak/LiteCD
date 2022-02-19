@@ -3,7 +3,7 @@ package me.hubertus248.deployer.instancemanager.spring
 import me.hubertus248.deployer.data.dto.EnvironmentDTO
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
-import me.hubertus248.deployer.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.BadRequestException
 import me.hubertus248.deployer.instancemanager.spring.instance.AvailableSpringInstanceService
 import me.hubertus248.deployer.security.IsAdmin
 import org.springframework.web.bind.annotation.*

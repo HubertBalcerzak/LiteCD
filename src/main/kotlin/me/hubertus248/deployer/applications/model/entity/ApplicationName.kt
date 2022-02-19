@@ -1,6 +1,6 @@
 package me.hubertus248.deployer.applications.model.entity
 
-import me.hubertus248.deployer.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.BadRequestException
 import javax.persistence.Column
 import javax.persistence.Embeddable
 
