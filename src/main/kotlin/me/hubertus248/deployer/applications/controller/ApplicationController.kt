@@ -2,25 +2,18 @@ package me.hubertus248.deployer.applications.controller
 
 import me.hubertus248.deployer.applications.mapper.ApplicationMapper
 import me.hubertus248.deployer.applications.model.dto.ApplicationDTO
-import me.hubertus248.deployer.applications.model.entity.Application
-import me.hubertus248.deployer.data.dto.CreateApplicationDTO
+import me.hubertus248.deployer.applications.model.dto.CreateApplicationDTO
 import me.hubertus248.deployer.applications.model.entity.ApplicationName
-import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.exception.NotFoundException
-import me.hubertus248.deployer.instancemanager.InstanceManagerFeature
 import me.hubertus248.deployer.security.IsAdmin
 import me.hubertus248.deployer.applications.service.ApplicationService
-import me.hubertus248.deployer.service.InstanceManagerService
-import me.hubertus248.deployer.service.InstanceService
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Pageable
 import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.security.core.Authentication
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.view.RedirectView
 import java.security.Principal
 
 //todo write tests

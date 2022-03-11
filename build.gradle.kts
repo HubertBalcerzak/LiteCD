@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	id("org.springframework.boot") version "2.3.1.RELEASE"
+	id("org.springframework.boot") version "2.5.1"
 	id("io.spring.dependency-management") version "1.0.9.RELEASE"
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
@@ -24,9 +24,7 @@ dependencies {
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-	implementation("org.keycloak:keycloak-spring-boot-starter:10.0.2")
 	implementation("commons-fileupload:commons-fileupload:1.3.3")
-	implementation("org.springframework.cloud:spring-cloud-starter-netflix-zuul:2.2.3.RELEASE")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.mapstruct:mapstruct:1.4.2.Final")
 	kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
