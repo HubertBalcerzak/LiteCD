@@ -1,7 +1,7 @@
 package me.hubertus248.deployer.instance.controller
 
 import me.hubertus248.deployer.data.entity.InstanceKey
-import me.hubertus248.deployer.security.IsAdmin
+import me.hubertus248.deployer.security.annotation.IsAdmin
 import me.hubertus248.deployer.service.InstanceManagerService
 import me.hubertus248.deployer.service.InstanceService
 import org.springframework.stereotype.Controller

@@ -5,7 +5,7 @@ import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.entity.Secret
 import me.hubertus248.deployer.exception.BadRequestException
 import me.hubertus248.deployer.instancemanager.spring.instance.AvailableSpringInstanceService
-import me.hubertus248.deployer.security.IsAdmin
+import me.hubertus248.deployer.security.annotation.IsAdmin
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.multipart.MultipartFile
 

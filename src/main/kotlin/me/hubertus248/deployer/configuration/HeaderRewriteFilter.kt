@@ -11,8 +11,9 @@ import javax.servlet.http.HttpServletRequest
 
 const val AUTHORIZATION_PROXIED_HEADER_NAME = "Authorization_Proxied"
 
-@Component("headerRewriteFilter")
-@Order(-200)
+//TODO validate if this is still necessary (#12)
+//@Component("headerRewriteFilter")
+//@Order(-200)
 class HeaderRewriteFilter : Filter {
 
     //TODO run only when needed
