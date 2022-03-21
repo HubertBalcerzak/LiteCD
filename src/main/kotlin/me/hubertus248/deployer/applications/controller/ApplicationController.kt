@@ -4,8 +4,8 @@ import me.hubertus248.deployer.applications.mapper.ApplicationMapper
 import me.hubertus248.deployer.applications.model.dto.ApplicationDTO
 import me.hubertus248.deployer.applications.model.dto.CreateApplicationDTO
 import me.hubertus248.deployer.applications.model.entity.ApplicationName
-import me.hubertus248.deployer.exception.NotFoundException
 import me.hubertus248.deployer.applications.service.ApplicationService
+import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.security.annotation.IsAdmin
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
