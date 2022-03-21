@@ -4,7 +4,7 @@ import me.hubertus248.deployer.data.entity.ZuulMappingId
 import org.springframework.stereotype.Service
 import java.util.*
 
-//TODO refactor to use spring cloud gateway
+//TODO refactor to use spring cloud gateway (#12)
 interface ZuulService {
     fun addMapping(path: String, target: String): ZuulMappingId
 

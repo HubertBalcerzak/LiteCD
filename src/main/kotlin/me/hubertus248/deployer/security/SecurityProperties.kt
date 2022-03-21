@@ -1,11 +1,9 @@
 package me.hubertus248.deployer.security
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.context.annotation.Bean
 
-@Qualifier("exampleBean")
 @ConstructorBinding
 @ConfigurationProperties(prefix = "deployer.security")
 data class SecurityProperties(
