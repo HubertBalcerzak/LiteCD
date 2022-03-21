@@ -5,7 +5,7 @@ import me.hubertus248.deployer.data.entity.EnvironmentVariable
 import me.hubertus248.deployer.data.entity.EnvironmentVariableName
 import me.hubertus248.deployer.data.entity.EnvironmentVariableValue
 import me.hubertus248.deployer.data.reposiotry.EnvironmentVariableRepository
-import me.hubertus248.deployer.exception.NotFoundException
+import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplication
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplicationRepository
 import me.hubertus248.deployer.instancemanager.spring.instance.SpringInstance

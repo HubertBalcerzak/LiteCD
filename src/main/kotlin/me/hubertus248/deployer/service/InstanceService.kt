@@ -4,8 +4,8 @@ import me.hubertus248.deployer.applications.service.ApplicationService
 import me.hubertus248.deployer.data.entity.Instance
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.reposiotry.InstanceRepository
-import me.hubertus248.deployer.exception.BadRequestException
-import me.hubertus248.deployer.exception.NotFoundException
+import me.hubertus248.deployer.common.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.instancemanager.InstanceManager
 import me.hubertus248.deployer.instancemanager.InstanceManagerFeature
 import org.springframework.stereotype.Service

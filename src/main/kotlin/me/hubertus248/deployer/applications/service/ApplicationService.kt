@@ -3,10 +3,10 @@ package me.hubertus248.deployer.applications.service
 import me.hubertus248.deployer.applications.model.entity.Application
 import me.hubertus248.deployer.applications.model.entity.ApplicationName
 import me.hubertus248.deployer.applications.model.entity.Visibility
-import me.hubertus248.deployer.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.BadRequestException
 import me.hubertus248.deployer.instancemanager.InstanceManagerName
 import me.hubertus248.deployer.applications.repository.ApplicationRepository
-import me.hubertus248.deployer.exception.NotFoundException
+import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.service.InstanceManagerService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

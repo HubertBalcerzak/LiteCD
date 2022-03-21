@@ -3,10 +3,12 @@ package me.hubertus248.deployer.instancemanager.staticfile
 import me.hubertus248.deployer.applications.model.entity.Application
 import me.hubertus248.deployer.applications.model.entity.ApplicationName
 import me.hubertus248.deployer.applications.model.entity.Visibility
-import me.hubertus248.deployer.data.entity.*
-import me.hubertus248.deployer.exception.BadRequestException
-import me.hubertus248.deployer.exception.NotFoundException
-import me.hubertus248.deployer.exception.UnauthorizedException
+import me.hubertus248.deployer.common.exception.AccessDeniedException
+import me.hubertus248.deployer.common.exception.BadRequestException
+import me.hubertus248.deployer.common.exception.NotFoundException
+import me.hubertus248.deployer.data.entity.Instance
+import me.hubertus248.deployer.data.entity.InstanceKey
+import me.hubertus248.deployer.data.entity.Secret
 import me.hubertus248.deployer.instancemanager.InstanceManager
 import me.hubertus248.deployer.instancemanager.InstanceManagerFeature
 import me.hubertus248.deployer.instancemanager.InstanceManagerName
@@ -44,7 +46,7 @@ class StaticFileInstanceManagerImpl(
         val staticFileApplication: StaticFileApplication = staticFileApplicationRepository.findFirstById(appId)
                 ?: throw BadRequestException()
 
-        if (secret != staticFileApplication.secret) throw UnauthorizedException()
+        if (secret != staticFileApplication.secret) throw AccessDeniedException()
 
         val instance = staticFileInstanceRepository.findFirstByKeyAndApplication(instanceKey,
                 staticFileApplication)

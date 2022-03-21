@@ -14,7 +14,7 @@ version = "0.2"
 java.sourceCompatibility = JavaVersion.VERSION_11
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -28,25 +28,26 @@ dependencies {
 	implementation("commons-fileupload:commons-fileupload:1.3.3")
 	implementation("org.flywaydb:flyway-core")
 	implementation("org.mapstruct:mapstruct:1.4.2.Final")
+	implementation("io.springfox:springfox-boot-starter:3.0.0")
 	kapt("org.mapstruct:mapstruct-processor:1.4.2.Final")
 	kapt("org.springframework.boot:spring-boot-configuration-processor")
 
-	runtimeOnly("mysql:mysql-connector-java")
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-	testImplementation("org.springframework.boot:spring-boot-starter-test") {
-		exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
-	}
-	testImplementation("org.springframework.security:spring-security-test")
+    runtimeOnly("mysql:mysql-connector-java")
+    runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
+    testImplementation("org.springframework.boot:spring-boot-starter-test") {
+        exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
+    }
+    testImplementation("org.springframework.security:spring-security-test")
 }
 
 tasks.withType<Test> {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }
 
 tasks.withType<KotlinCompile> {
-	kotlinOptions {
-		freeCompilerArgs = listOf("-Xjsr305=strict")
-		jvmTarget = "11"
-	}
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xjsr305=strict")
+        jvmTarget = "11"
+    }
 }
 
