@@ -1,6 +1,6 @@
 package me.hubertus248.deployer.data.reposiotry
 
-import me.hubertus248.deployer.applications.model.entity.Application
+import me.hubertus248.deployer.application.model.entity.Application
 import me.hubertus248.deployer.data.entity.Instance
 import me.hubertus248.deployer.data.entity.InstanceKey
 import org.springframework.data.domain.Pageable

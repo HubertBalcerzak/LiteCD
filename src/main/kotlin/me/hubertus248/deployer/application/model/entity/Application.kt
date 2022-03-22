@@ -1,4 +1,4 @@
-package me.hubertus248.deployer.applications.model.entity
+package me.hubertus248.deployer.application.model.entity
 
 import me.hubertus248.deployer.data.entity.Instance
 import me.hubertus248.deployer.instancemanager.InstanceManagerName

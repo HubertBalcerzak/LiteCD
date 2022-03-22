@@ -1,11 +1,11 @@
-package me.hubertus248.deployer.applications.service
+package me.hubertus248.deployer.application.service
 
-import me.hubertus248.deployer.applications.model.entity.Application
-import me.hubertus248.deployer.applications.model.entity.ApplicationName
-import me.hubertus248.deployer.applications.model.entity.Visibility
+import me.hubertus248.deployer.application.model.entity.Application
+import me.hubertus248.deployer.application.model.entity.ApplicationName
+import me.hubertus248.deployer.application.model.entity.Visibility
 import me.hubertus248.deployer.common.exception.BadRequestException
 import me.hubertus248.deployer.instancemanager.InstanceManagerName
-import me.hubertus248.deployer.applications.repository.ApplicationRepository
+import me.hubertus248.deployer.application.repository.ApplicationRepository
 import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.service.InstanceManagerService
 import org.slf4j.Logger

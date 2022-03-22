@@ -1,8 +1,8 @@
 package me.hubertus248.deployer.instancemanager.spring
 
-import me.hubertus248.deployer.applications.model.entity.Application
-import me.hubertus248.deployer.applications.model.entity.ApplicationName
-import me.hubertus248.deployer.applications.model.entity.Visibility
+import me.hubertus248.deployer.application.model.entity.Application
+import me.hubertus248.deployer.application.model.entity.ApplicationName
+import me.hubertus248.deployer.application.model.entity.Visibility
 import me.hubertus248.deployer.data.dto.AvailableInstance
 import me.hubertus248.deployer.data.entity.*
 import me.hubertus248.deployer.common.exception.BadRequestException

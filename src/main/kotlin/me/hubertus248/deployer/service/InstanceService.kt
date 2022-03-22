@@ -1,6 +1,6 @@
 package me.hubertus248.deployer.service
 
-import me.hubertus248.deployer.applications.service.ApplicationService
+import me.hubertus248.deployer.application.service.ApplicationService
 import me.hubertus248.deployer.data.entity.Instance
 import me.hubertus248.deployer.data.entity.InstanceKey
 import me.hubertus248.deployer.data.reposiotry.InstanceRepository
