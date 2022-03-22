@@ -5,7 +5,7 @@ import me.hubertus248.deployer.common.exception.NotFoundException
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplication
 import me.hubertus248.deployer.instancemanager.spring.application.SpringApplicationRepository
 import me.hubertus248.deployer.instancemanager.spring.instance.SpringInstanceRepository
-import me.hubertus248.deployer.security.IsAdmin
+import me.hubertus248.deployer.security.annotation.IsAdmin
 import me.hubertus248.deployer.service.LogService
 import org.apache.commons.io.IOUtils
 import org.slf4j.LoggerFactory

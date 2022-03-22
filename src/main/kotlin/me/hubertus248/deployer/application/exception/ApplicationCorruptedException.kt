@@ -1,4 +1,4 @@
-package me.hubertus248.deployer.applications.exception
+package me.hubertus248.deployer.application.exception
 
 import me.hubertus248.deployer.common.exception.ApplicationException
 import org.springframework.http.HttpStatus

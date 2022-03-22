@@ -1,12 +1,10 @@
 package me.hubertus248.deployer.service
 
 import me.hubertus248.deployer.data.entity.ZuulMappingId
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.cloud.netflix.zuul.filters.ZuulProperties
-import org.springframework.cloud.netflix.zuul.web.ZuulHandlerMapping
 import org.springframework.stereotype.Service
 import java.util.*
 
+//TODO refactor to use spring cloud gateway (#12)
 interface ZuulService {
     fun addMapping(path: String, target: String): ZuulMappingId
 
@@ -15,11 +13,11 @@ interface ZuulService {
 
 @Service
 class ZuulServiceImpl(
-        private val zuulProperties: ZuulProperties,
-        private val zuulHandlerMapping: ZuulHandlerMapping
+//        private val zuulProperties: ZuulProperties,
+//        private val zuulHandlerMapping: ZuulHandlerMapping
 ) : ZuulService {
 
-    override fun addMapping(path: String, target: String): ZuulMappingId {
+    override fun addMapping(path: String, target: String): ZuulMappingId = TODO()/*{
         val newMappingId = ZuulMappingId(UUID.randomUUID())
         zuulProperties.routes[newMappingId.value.toString()] = ZuulProperties.ZuulRoute(
                 newMappingId.value.toString(),
@@ -32,11 +30,11 @@ class ZuulServiceImpl(
         )
         zuulHandlerMapping.setDirty(true)
         return newMappingId
-    }
+    }*/
 
-    override fun removeMapping(zuulMappingId: ZuulMappingId) {
+    override fun removeMapping(zuulMappingId: ZuulMappingId) = TODO()/*{
         zuulProperties.routes.remove(zuulMappingId.value.toString())
         zuulHandlerMapping.setDirty(true)
-    }
+    }*/
 
 }

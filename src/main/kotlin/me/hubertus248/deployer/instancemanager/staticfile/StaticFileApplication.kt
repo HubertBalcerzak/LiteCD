@@ -1,9 +1,9 @@
 package me.hubertus248.deployer.instancemanager.staticfile
 
-import me.hubertus248.deployer.applications.model.entity.Application
-import me.hubertus248.deployer.applications.model.entity.ApplicationName
+import me.hubertus248.deployer.application.model.entity.Application
+import me.hubertus248.deployer.application.model.entity.ApplicationName
 import me.hubertus248.deployer.data.entity.Secret
-import me.hubertus248.deployer.applications.model.entity.Visibility
+import me.hubertus248.deployer.application.model.entity.Visibility
 import javax.persistence.Embedded
 import javax.persistence.Entity
 

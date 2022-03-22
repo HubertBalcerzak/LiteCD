@@ -1,6 +1,6 @@
 package me.hubertus248.deployer.data.entity
 
-import me.hubertus248.deployer.applications.model.entity.Application
+import me.hubertus248.deployer.application.model.entity.Application
 import javax.persistence.*
 
 @Entity

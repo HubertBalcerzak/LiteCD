@@ -1,7 +1,7 @@
 package me.hubertus248.deployer.service
 
-import me.hubertus248.deployer.applications.model.entity.Application
-import me.hubertus248.deployer.applications.exception.ApplicationCorruptedException
+import me.hubertus248.deployer.application.model.entity.Application
+import me.hubertus248.deployer.application.exception.ApplicationCorruptedException
 import me.hubertus248.deployer.instancemanager.InstanceManager
 import me.hubertus248.deployer.instancemanager.InstanceManagerName
 import org.springframework.stereotype.Service
